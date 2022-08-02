@@ -19,6 +19,10 @@ class CreateTeachersTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '50',
             ],
+            'second_last_name' => [
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+            ],
             'email' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
@@ -30,14 +34,6 @@ class CreateTeachersTable extends Migration
 			'mobile_number' => [
                 'type' => ' VARCHAR',
                 'constraint' => '20',
-            ],
-            'web' => [
-                'type' => ' VARCHAR',
-                'constraint' => '100',
-            ],
-            'job_training' => [
-                'type' => ' VARCHAR',
-                'constraint' => '100',
             ],
             'address_line' => [
                 'type' => 'VARCHAR',
@@ -51,7 +47,7 @@ class CreateTeachersTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '30',
             ],
-            'address_province' => [
+            'address_state' => [
                 'type' => 'TINYINT',
                 'constraint' => '2',
             ],
@@ -62,14 +58,6 @@ class CreateTeachersTable extends Migration
             ],
             'birthdate' => [
                 'type' => 'DATE',
-            ],
-            'observations' => [
-                'type' => ' VARCHAR',
-                'constraint' => '500',
-            ],
-            'dni' => [
-                'type' => ' VARCHAR',
-                'constraint' => '9',
             ],
             'is_active' => [
                 'type' => 'TINYINT',

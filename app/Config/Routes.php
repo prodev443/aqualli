@@ -54,8 +54,8 @@ $routes->group('system', function($routes){
 $routes->group('users', function($routes){
 	$routes->get('', 'UsersController::index');
 	$routes->get('create', 'UsersController::create');
-	$routes->get('detail/(:segment)', 'UsersController::detail/$1');
-	$routes->get('edit/(:segment)', 'UsersController::edit/$1');
+	$routes->get('detail/(:num)', 'UsersController::detail/$1');
+	$routes->get('edit/(:num)', 'UsersController::edit/$1');
 	$routes->get('update_password/(:num)', 'UsersController::showPasswordUpdatePopup/$1');
 	$routes->get('resources/list', 'UsersController::listJSON');
 	$routes->post('resources/insert', 'UsersController::insert');
@@ -78,6 +78,52 @@ $routes->group('students', function($routes){
 		$routes->post('update', 'StudentsController::update');
 		$routes->delete('delete', 'StudentsController::delete');
 		$routes->delete('delete_photo', 'StudentsController::deletePhoto');
+	});
+});
+
+// Profesores
+$routes->group('teachers', function($routes){
+	$routes->get('', 'TeachersController');
+	$routes->get('popup', 'TeachersController::showPopup');
+	$routes->get('create', 'TeachersController::create');
+	$routes->get('edit/(:num)', 'TeachersController::edit/$1');
+	$routes->get('detail/(:num)', 'TeachersController::detail/$1');
+	$routes->group('resources', function($routes){
+		$routes->get('get', 'TeachersController::get');
+		$routes->get('get/(:num)', 'TeachersController::get/$1');
+		$routes->get('select2', 'TeachersController::select2Teachers');
+		$routes->get('getcv/(:num)', 'TeachersController::getCV/$1');
+		$routes->get('getphoto/(:num)', 'TeachersController::getPhoto/$1');
+		$routes->post('insert', 'TeachersController::insert');
+		$routes->post('update', 'TeachersController::update');
+		$routes->delete('delete', 'TeachersController::delete');
+		$routes->delete('delete_photo', 'TeachersController::deletePhoto');
+		$routes->delete('delete_cv', 'TeachersController::deleteCV');
+	});
+});
+
+// Cursos
+$routes->group('courses', function($routes){
+	$routes->get('', 'CoursesController');
+	$routes->get('create', 'CoursesController::create');
+	$routes->get('detail/(:num)', 'CoursesController::detail/$1');
+	$routes->get('edit/(:num)', 'CoursesController::edit/$1');
+	$routes->group('resources', function($routes){
+		$routes->get('get', 'CoursesController::get');
+		$routes->get('get/(:num)', 'CoursesController::get/$1');
+		$routes->post('insert', 'CoursesController::insert');
+		$routes->post('update', 'CoursesController::update');
+		$routes->delete('delete', 'CoursesController::delete');
+		$routes->get('select2', 'CoursesController::select2Courses');
+	});
+	$routes->group('documents', function($routes){
+		$routes->get('(:num)', 'CourseDocumentsController::get/$1');
+		$routes->get('create/(:num)', 'CourseDocumentsController::addDocument/$1');
+		$routes->get('edit/(:num)', 'CourseDocumentsController::edit/$1');
+		$routes->get('download/(:num)', 'CourseDocumentsController::download/$1');
+		$routes->post('insert', 'CourseDocumentsController::insert');
+		$routes->post('update', 'CourseDocumentsController::update');
+		$routes->delete('delete', 'CourseDocumentsController::deleteArray');
 	});
 });
 

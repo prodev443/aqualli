@@ -8,16 +8,6 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title text-light" key="t-menu">Módulos</li>
-                <?php if(isset($modulesAllowed) && in_array('delegations', $modulesAllowed)): ?>
-                <!-- Sección de Delegaciones -->
-
-                <li>
-                    <a href="<?=base_url('delegations')?>" key="t-default" class="text-light">
-                        <i class="bx bxs-city text-light"></i><span>Delegaciones</span>
-                    </a>
-                </li>
-
-                <?php endif;?>
 
                 <?php if(isset($modulesAllowed) && in_array('teachers', $modulesAllowed)): ?>
                 <!-- Sección de Profesores -->
@@ -44,14 +34,9 @@
                 <?php if (isset($modulesAllowed) && in_array('courses', $modulesAllowed)) : ?>
                 <!-- Sección de Cursos -->
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect text-light">
-                            <i class="mdi mdi-teach text-light"></i>
-                            <span key="t-dashboards">Cursos</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="<?=base_url('courses')?>" key="t-default" class="text-light">Cursos</a></li>
-                            <li><a href="<?=base_url('current_courses')?>" key="t-default" class="text-light">Estadillos</a></li>
-                        </ul>
+                        <a href="<?=base_url('courses')?>" key="t-default" class="waves-effect text-light">
+                            <i class="bx bx-swim text-light"></i>Cursos
+                        </a> 
                     </li>
                 <?php endif ?>
 
@@ -61,17 +46,6 @@
                 <li>
                     <a href="<?=base_url('users')?>" class="waves-effect text-light">
                         <i class="fas fa-user text-light"></i><span>Usuarios</span>
-                    </a>
-                </li>
-
-                <?php endif;?>
-
-                <?php if(isset($modulesAllowed) && in_array('invoices', $modulesAllowed)): ?>
-                <!-- Sección de Facturas -->
-
-                <li>
-                    <a href="<?=base_url('invoices')?>" class="waves-effect text-light">
-                        <i class="fas fa-file-invoice text-light"></i><span>Facturas</span>
                     </a>
                 </li>
 
