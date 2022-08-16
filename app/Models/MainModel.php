@@ -171,6 +171,11 @@ class MainModel extends Model
      */
     public function listAll($whereArray = null)
     {
+        $fields = $this->db->getFieldNames($this->table);
+        foreach ($fields as $key => $field) {
+            $fields[$key] = "{$this->table}.{$field}";
+        }
+        $this->select(implode(',', $fields));
         if ($this->checkPermissions()) {
             if($whereArray !== null){
                 if($this->orWhere !== null)

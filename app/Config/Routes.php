@@ -116,17 +116,35 @@ $routes->group('courses', function($routes){
 		$routes->delete('delete', 'CoursesController::delete');
 		$routes->get('select2', 'CoursesController::select2Courses');
 	});
-	$routes->group('documents', function($routes){
-		$routes->get('(:num)', 'CourseDocumentsController::get/$1');
-		$routes->get('create/(:num)', 'CourseDocumentsController::addDocument/$1');
-		$routes->get('edit/(:num)', 'CourseDocumentsController::edit/$1');
-		$routes->get('download/(:num)', 'CourseDocumentsController::download/$1');
-		$routes->post('insert', 'CourseDocumentsController::insert');
-		$routes->post('update', 'CourseDocumentsController::update');
-		$routes->delete('delete', 'CourseDocumentsController::deleteArray');
+});
+
+// Grupos
+$routes->group('groups', function($routes){
+	$routes->get('', 'GroupsController');
+	$routes->get('create', 'GroupsController::create');
+	$routes->get('detail/(:num)', 'GroupsController::detail/$1');
+	$routes->get('edit/(:num)', 'GroupsController::edit/$1');
+	$routes->group('resources', function($routes){
+		$routes->get('get', 'GroupsController::get');
+		$routes->get('get/(:num)', 'GroupsController::get/$1');
+		$routes->post('insert', 'GroupsController::insert');
+		$routes->post('update', 'GroupsController::update');
+		$routes->delete('delete', 'GroupsController::delete');
+		$routes->get('select2', 'GroupsController::select2Groups');
 	});
 });
 
+// Horario
+$routes->group('schedules', function($routes){
+	$routes->group('resources', function($routes){
+		$routes->get('get', 'SchedulesController::get');
+		$routes->get('get/(:num)', 'SchedulesController::get/$1');
+		$routes->post('insert', 'SchedulesController::insert');
+		$routes->post('update', 'SchedulesController::update');
+		$routes->delete('delete', 'SchedulesController::delete');
+		$routes->get('select2', 'SchedulesController::select2Schedule');
+	});
+});
 /**
  * --------------------------------------------------------------------
  * Additional Routing

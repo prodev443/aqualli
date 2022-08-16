@@ -71,7 +71,8 @@ $this->setVar('scripts', array(
                             <div class="mb-3">
                                 <div class="d-sm-none d-md-block" style="height: 27.5px;"></div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active">
+                                    <input type="hidden" name="is_active" value="0">
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
                                     <label class="form-check-label" for="is_active">
                                         Activo
                                     </label>

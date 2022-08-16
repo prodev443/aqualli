@@ -47,8 +47,8 @@ class UserModel extends MainModel{
     protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
-    protected $beforeInsert = ['hashPassword','setIsActive','setUserForeignKeys'];
-    protected $beforeUpdate = ['hashPassword','setIsActive'];
+    protected $beforeInsert = ['hashPassword','setUserForeignKeys'];
+    protected $beforeUpdate = ['hashPassword',];
 
     protected function hashPassword(array $data){
         if (!isset($data['data']['password'])){
@@ -56,15 +56,6 @@ class UserModel extends MainModel{
         } 
         $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
     
-        return $data;        
-    }
-
-    protected function setIsActive(array $data){
-        if (isset($data['data']['is_active'])){
-            $data['data']['is_active'] = 1; 
-        } else {
-            $data['data']['is_active'] = 0;
-        }    
         return $data;        
     }
 

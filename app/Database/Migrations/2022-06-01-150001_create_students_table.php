@@ -96,6 +96,7 @@ class CreateStudentsTable extends Migration
         ]);
         $this->forge->addForeignKey('created_by', 'users', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('assigned_to', 'users', 'id', 'CASCADE', 'RESTRICT');
+        // $this->forge->addForeignKey('group_id', 'groups', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('students');
         $this->db->enableForeignKeyChecks();
     }

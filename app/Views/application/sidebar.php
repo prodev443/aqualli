@@ -31,6 +31,17 @@
 
                 <?php endif;?>
 
+                <?php if(isset($modulesAllowed) && in_array('students', $modulesAllowed)): ?>
+                <!-- Sección de Grupos -->
+
+                <li>
+                    <a href="<?=base_url('groups')?>" class="waves-effect text-light">
+                        <i class="dripicons-user-group text-light"></i><span>Grupos</span>
+                    </a>
+                </li>
+
+                <?php endif;?>
+
                 <?php if (isset($modulesAllowed) && in_array('courses', $modulesAllowed)) : ?>
                 <!-- Sección de Cursos -->
                     <li>
