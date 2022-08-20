@@ -32,12 +32,12 @@ $this->setVar('scripts', array(
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <a class="btn btn-success" href="<?= base_url('teachers/edit/'.$teacher['id']) ?>">
-                                <i class="bx bxs-pencil"></i> Editar
+                            <a class="btn btn-success btn-label" href="<?= base_url('teachers/edit/'.$teacher['id']) ?>">
+                                <i class="bx bxs-pencil label-icon"></i> Editar
                             </a>&nbsp;
                             <?php if (! empty($teacher['photo_path'])): ?>
-                            <button id="delete_photo_btn" type="button" class="btn btn-danger" onclick="deletePhoto()">
-                                <i class="bx bxs-trash"></i>Eliminar fotografía
+                            <button id="delete_photo_btn" type="button" class="btn btn-danger btn-label" onclick="deletePhoto()">
+                                <i class="bx bxs-trash label-icon"></i>Eliminar fotografía
                             </button>
                             <?php endif; ?>
                         </div>
@@ -128,11 +128,11 @@ $this->setVar('scripts', array(
                             <label for="cv" class="form-label">Currículum Vitae</label>
                             <?php if (! empty($teacher['cv_path'])) : ?>
                                 <div id="cv" class="d-flex">
-                                    <a type="button" href="<?= base_url('teachers/resources/getcv/'.$teacher['id']) ?>" class="btn btn-info">
-                                        <i class="bx bx-file"></i> Descargar CV
+                                    <a type="button" href="<?= base_url('teachers/resources/getcv/'.$teacher['id']) ?>" class="btn btn-info btn-label">
+                                        <i class="bx bx-file label-icon"></i> Descargar CV
                                     </a>&nbsp;
-                                    <button id="" type="button" class="btn btn-danger" onclick="deleteCV()">
-                                        <i class="bx bxs-trash"></i> Eliminar CV
+                                    <button id="" type="button" class="btn btn-danger btn-label" onclick="deleteCV()">
+                                        <i class="bx bxs-trash label-icon"></i> Eliminar CV
                                     </button>
                                 </div>
                             <?php else : ?>

@@ -37,7 +37,6 @@ function serializeFormData(form_id) {
                         data: data,
                         dataType: 'text json',
                         success: function (data, status) {
-                            console.log('Success: '+ data);
                             csrftoken = data.token;
                             resolve(data)
                         },
@@ -113,27 +112,29 @@ function serializeFormData(form_id) {
         confirmButtonText: 'Sí',
         cancelButtonText: 'No'
         }).then((result) => {
-        if (result.isConfirmed) {
-            request().then((data) => {
-                if(data.errors !== undefined){
-                    for(var i in data.errors){
+            if (result.isConfirmed) {
+                request().then((data) => {
+                    if(data.errors !== undefined){
+                        for(var i in data.errors){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.errors[i],
+                            })
+                        }
+                        reject(data)
+                    } else {
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: data.errors[i],
+                            icon: 'success',
+                            title: 'Datos guardados',
+                            text: 'Eliminación existosa',
                         })
+                        resolve(data)
                     }
-                    reject(data)
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Datos guardados',
-                        text: 'Eliminación existosa',
-                    })
-                    resolve(data)
-                }
-            })
-        }
+                })
+            } else {
+                resolve(false) // Indica que se completó la solicitud sin eliminar datos
+            }
         })
     })
 }

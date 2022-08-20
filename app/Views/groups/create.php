@@ -44,8 +44,8 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" onclick="postForm('group_form', '<?=esc(base_url('groups/resources/insert'),'js')?>', '<?=esc(base_url('groups'),'js')?>')" class="btn btn-success">
-                        <i class="bx bxs-save"></i> Registrar
+                    <button type="button" onclick="postForm('group_form', '<?=esc(base_url('groups/resources/insert'),'js')?>', '<?=esc(base_url('groups'),'js')?>')" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i> Registrar
                     </button>
                 </div>
             </form>

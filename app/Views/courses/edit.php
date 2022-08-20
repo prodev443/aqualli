@@ -67,8 +67,8 @@ $this->setVar('scripts', array(
               <div>
                   <button type="button"
                       onclick="postForm('course_form', '<?=esc(base_url('courses/resources/update'),'js')?>', '<?=esc(base_url('courses'),'js')?>')"
-                      class="btn btn-success">
-                      <i class="bx bxs-save"></i> Guardar
+                      class="btn btn-success btn-label">
+                      <i class="bx bxs-save label-icon"></i> Guardar
                   </button>
               </div>
             </form>

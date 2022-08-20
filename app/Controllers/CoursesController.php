@@ -28,7 +28,7 @@ class CoursesController extends MasterController
 		$model = $this->model;
 		$fields = ['id','code','name'];
         if(isset($_GET['_type']) && $_GET['_type'] === 'query'){
-			$response = $model->select2Get($fields, 'name', 'both', $_GET['q'] ?? '');
+			$response = $model->select2Get($fields, 'name', 'both', $_GET['q'] ?? '',['is_active' => 1]);
             return $this->response->setJSON($response);
         }
         return $this->response->setJSON($model->select2Get($fields));

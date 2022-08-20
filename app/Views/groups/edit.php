@@ -50,8 +50,8 @@ $this->setVar('scripts', array(
               <div>
                   <button type="button"
                       onclick="postForm('group_form', '<?=esc(base_url('groups/resources/update'),'js')?>', '<?=esc(base_url('groups'),'js')?>')"
-                      class="btn btn-success">
-                      <i class="bx bxs-save"></i> Guardar
+                      class="btn btn-success btn-label">
+                      <i class="bx bxs-save label-icon"></i> Guardar
                   </button>
               </div>
             </form>

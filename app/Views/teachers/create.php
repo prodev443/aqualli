@@ -126,8 +126,8 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" onclick="postForm('teacher-form', '<?=esc(base_url('teachers/resources/insert'),'js')?>', '<?=esc(base_url('teachers'),'js')?>')" class="btn btn-success">
-                        <i class="bx bxs-save"></i> Guardar
+                    <button type="button" onclick="postForm('teacher-form', '<?=esc(base_url('teachers/resources/insert'),'js')?>', '<?=esc(base_url('teachers'),'js')?>')" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i> Guardar
                     </button>
                 </div>
             </form>

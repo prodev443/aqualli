@@ -122,11 +122,11 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" onclick="postForm('student_form', '<?=esc(base_url('students/resources/update'),'js')?>', '<?=esc(base_url('students'),'js')?>')" class="btn btn-success">
-                        <i class="bx bxs-save"></i> Guardar
+                    <button type="button" onclick="postForm('student_form', '<?=esc(base_url('students/resources/update'),'js')?>', '<?=esc(base_url('students'),'js')?>')" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i> Guardar
                     </button>
-                    <button type="button" onclick="deleteInput('<?=esc(base_url('students/resources/delete'),'js')?>', '<?=esc(base_url('students'),'js')?>')" class="btn btn-danger">
-                        <i class="bx bx-trash"></i> Eliminar
+                    <button type="button" onclick="deleteInput('<?=esc(base_url('students/resources/delete'),'js')?>', '<?=esc(base_url('students'),'js')?>')" class="btn btn-danger btn-label">
+                        <i class="bx bx-trash label-icon"></i> Eliminar
                     </button>
                 </div>
             </form>

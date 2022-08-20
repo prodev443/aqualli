@@ -127,8 +127,8 @@ $this->setVar('scripts', array(
                 <div>
                     <button type="button"
                         onclick="postForm('student-form', '<?=esc(base_url('students/resources/insert'),'js')?>', '<?=esc(base_url('students'),'js')?>')"
-                        class="btn btn-success">
-                        <i class="bx bxs-save"></i> Registrar
+                        class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i> Registrar
                     </button>
                 </div>
 

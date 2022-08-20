@@ -64,8 +64,8 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" onclick="postForm('course_form', '<?=esc(base_url('courses/resources/insert'),'js')?>', '<?=esc(base_url('courses'),'js')?>')" class="btn btn-success">
-                        <i class="bx bxs-save"></i> Registrar
+                    <button type="button" onclick="postForm('course_form', '<?=esc(base_url('courses/resources/insert'),'js')?>', '<?=esc(base_url('courses'),'js')?>')" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i> Registrar
                     </button>
                 </div>
             </form>
