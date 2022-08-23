@@ -31,7 +31,7 @@ $this->setVar('scripts', array(
     </div> <!-- end col -->
 </div>
 <script>
-    let teachers_table;
+    let teachers_table = null;
 
     // Tabla
     $(document).ready(() => {
@@ -119,7 +119,6 @@ $this->setVar('scripts', array(
                 }
             },
         });
-        teachers_table.setLocale("es-mx")
     })
 </script>
 <?= $this->endSection(); ?>

@@ -136,6 +136,9 @@ $routes->group('groups', function($routes){
 
 // Horario
 $routes->group('schedules', function($routes){
+	$routes->group('groups', function($routes){
+		$routes->get('get/(:num)', 'SchedulesController::getByGroup/$1');
+	});
 	$routes->group('resources', function($routes){
 		$routes->get('get', 'SchedulesController::get');
 		$routes->get('get/(:num)', 'SchedulesController::get/$1');

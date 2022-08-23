@@ -122,7 +122,6 @@ $this->setVar('scripts', array(
                 }
             },
         });
-        students_table.setLocale("es-mx")
     })
 </script>
 <?= $this->endSection(); ?>
