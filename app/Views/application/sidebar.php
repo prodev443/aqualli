@@ -44,11 +44,11 @@
 
                 <?php if (isset($modulesAllowed) && in_array('courses', $modulesAllowed)) : ?>
                 <!-- Sección de Cursos -->
-                    <li>
-                        <a href="<?=base_url('courses')?>" key="t-default" class="waves-effect text-light">
-                            <i class="bx bx-swim text-light"></i>Cursos
-                        </a> 
-                    </li>
+                <li>
+                    <a href="<?=base_url('courses')?>" class="waves-effect text-light">
+                        <i class="bx bx-swim text-light"></i><span>Cursos</span>
+                    </a> 
+                </li>
                 <?php endif ?>
 
                 <?php if(isset($modulesAllowed) && in_array('users', $modulesAllowed)): ?>

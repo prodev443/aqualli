@@ -14,10 +14,10 @@
 
                 <a href="/" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="<?=base_url('assets/images/aqualliwhite.png')?>" alt="" height="50">
+                        <img src="<?=base_url('assets/images/aqualli-sm.png')?>" width="22px">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?=base_url('assets/images/aqualliwhite.png')?>" alt="" height="50">
+                        <img src="<?=base_url('assets/images/aqualli-lg.png')?>" alt="" height="50">
                     </span>
                 </a>
             </div>

@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="description" />
     <meta content="Samuel Alderete Rayón" name="author" />
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="<?=base_url('assets/images/favicon_feda.png')?>">
 
     <!-- Bootstrap Css -->
     <link href="<?=base_url('assets/css/bootstrap.min.css')?>" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -59,7 +57,7 @@
                                 <a href="/" class="auth-logo-light">
                                     <div class="avatar-md profile-user-wid mb-4">
                                         <span class="avatar-title rounded-circle bg-light">
-                                            <img src="<?=base_url('assets/images/aqualli_fb.jpg')?>" alt="Logo FEDA" class="rounded-circle"
+                                            <img src="<?=base_url('favicon.ico')?>" alt="Logo FEDA" class="rounded-circle"
                                                 height="34">
                                         </span>
                                     </div>
@@ -68,7 +66,7 @@
                                 <a href="/" class="auth-logo-dark">
                                     <div class="avatar-md profile-user-wid mb-4">
                                         <span class="avatar-title rounded-circle bg-light">
-                                            <img src="<?=base_url('assets/images/aqualli_fb.jpg')?>" alt="Logo FEDA" class="rounded-circle" height="34">
+                                            <img src="<?=base_url('favicon.ico')?>" alt="Logo FEDA" class="rounded-circle" height="34">
                                         </span>
                                     </div>
                                 </a>
@@ -121,7 +119,7 @@
                     <div class="mt-5 text-center">
 
                         <div>
-                            <p>© <script>document.write(new Date().getFullYear())</script> FEDA
+                            <p>© <script>document.write(new Date().getFullYear())</script> Aqualli
                             </p>
                         </div>
                     </div>
