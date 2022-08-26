@@ -21,12 +21,7 @@ class ScoresModel extends MainModel
 	protected $deletedField         = 'deleted_at';
 
 	// Validation
-	// Validation
-    protected $validationRules = [
-        'first_name' => 'required|min_length[3]',
-        'last_name' => 'required|min_length[3]',
-        'second_last_name' => 'required|min_length[3]',
-    ];
+    protected $validationRules = [];
 	protected $validationMessages   = [];
 	protected $skipValidation       = false;
 	protected $cleanValidationRules = true;

@@ -8,7 +8,7 @@ $this->setVar('css_styles', array(
 ));
 $this->setVar('scripts', array(
     'assets/libs/sweetalert2/sweetalert2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
+    'assets/custom/js/ajax.js',
     'assets/libs/tabulator/js/tabulator.min.js',
     'assets/custom/js/table_library.js', // Funciones para tabulator
     'assets/js/students/detail.js',

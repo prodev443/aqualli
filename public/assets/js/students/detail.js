@@ -30,37 +30,83 @@ document.addEventListener('DOMContentLoaded', function (e) {
     coursesTable = new Tabulator("#courses-table", {
         ajaxURL: `${base_url}/students/resources/courses/${student_id}`,
         layout: "fitDataFill",
-        pagination:true,
-        paginationSize:20,
+        pagination: true,
+        paginationSize: 20,
         columns: [
             {
                 title: "Código",
                 field: "course_code",
-                headerFilter:"input",
-                formatter:function(cell){
+                headerFilter: "input",
+                formatter: function (cell) {
                     let course_id = cell.getRow().getData().course_id
                     let url = `${base_url}/courses/detail/${course_id}`
                     let html = `<a href="${url}" style="color: blue;">${cell.getValue()}</a>`
                     return html
                 },
             },
+            {
+                title: "Curso",
+                field: "course_name",
+                headerFilter: "input",
+            },
+            {
+                title: "Calificación",
+                field: "score",
+                headerFilter: "input",
+                hozAlign: "center",
+                tooltip:"Edite la calificación desde la tabla",
+                formatter: function (cell) {
+                    if (cell.getValue() == null) {
+                        return 'No calificado'
+                    } else {
+                        return cell.getValue()
+                    }
+                },
+                editor: "number", editorParams: {
+                    min: 0,
+                    max: 10,
+                    step: 0.5,
+                    elementAttributes: {
+                        maxlength: "10",
+                    },
+                    selectContents: true,
+                    verticalNavigation: "table",
+                },
+                cellEdited:function(cell){
+                    let data = cell.getRow().getData()
+                    let insert_url = `${base_url}/scores/resources/insert`
+                    let update_url = `${base_url}/scores/resources/update`
+                    let record = {
+                        student_id: data.student_id,
+                        course_id: data.course_id,
+                        score: cell.getValue()
+                    }
+                    if(data.score_id == null){
+                        postJSONData(record, insert_url)
+                    } else {
+                        record.id = data.score_id
+                        postJSONData(record, update_url)
+                    }
+                    coursesTable.replaceData()
+                },
+            },
         ],
-        locale:true,
-        langs:{
-            "es-mx":{
-                "columns":{
-                    "name":"Nombre",
+        locale: true,
+        langs: {
+            "es-mx": {
+                "columns": {
+                    "name": "Nombre",
                 },
-                "data":{
-                    "loading":"Cargando",
-                    "error":"Error",
+                "data": {
+                    "loading": "Cargando",
+                    "error": "Error",
                 },
-                "pagination":{
-                    "first":"Primera",
-                    "last":"ültima",
-                    "prev":"Anterior",
-                    "next":"Siguiente",
-                    "counter":{
+                "pagination": {
+                    "first": "Primera",
+                    "last": "ültima",
+                    "prev": "Anterior",
+                    "next": "Siguiente",
+                    "counter": {
                         "showing": "Mostrando",
                         "of": "de",
                         "rows": "registros",
