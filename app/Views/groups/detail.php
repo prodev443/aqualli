@@ -85,19 +85,13 @@ $this->setVar('scripts', array(
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <label class="form-label">Clase</label>
-                                <input class="form-control" placeholder="" type="text" name="title" id="event-title"
-                                    required value="" />
-                                <div class="invalid-feedback">Nombre de la clase</div>
+                                <label for="course_id" class="form-label">Curso</label>
+                                <select class="select2-search form-select" data-live-search="true" name="course_id"
+                                    id="course_id" required>
+                                    <option disabled selected value> -- Seleccione un curso -- </option>
+                                </select>
+                                <div class="invalid-feedback">Seleccione un curso de la lista</div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="course_id" class="form-label">Curso</label>
-                            <select class="select2-search form-select" data-live-search="true" name="course_id"
-                                id="course_id" required>
-                                <option disabled selected value> -- Seleccione un curso -- </option>
-                            </select>
-                            <div class="invalid-feedback">Seleccione un curso de la lista</div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
@@ -147,7 +141,7 @@ $this->setVar('scripts', array(
                         </button>
                     </div>
                     <div class="btn-group">
-                    <button type="button" class="btn btn-danger btn-label" id="btn-delete-event">
+                        <button type="button" class="btn btn-danger btn-label" id="btn-delete-event">
                             <i class="bx bx-trash label-icon"></i>Eliminar
                         </button>
                     </div>
@@ -268,12 +262,11 @@ $(document).ready(
                         formEvent[0].reset();
                         selectedEvent = info.event;
                         $("#event-id").val(selectedEvent.id);
-                        $("#event-title").val(selectedEvent.title);
                         $("#event-startTime").val(msToTime(selectedEvent._def.recurringDef.typeData
                             .startTime.milliseconds));
                         $("#event-daysOfWeek").val(selectedEvent._def.recurringDef.typeData
                             .daysOfWeek);
-                        var option = new Option(selectedEvent._def.extendedProps.course_name,
+                        var option = new Option(selectedEvent._def.title,
                             selectedEvent._def.extendedProps.course_id, true, true);
                         $('#course_id').append(option).trigger('change');
                         modalTitle.text('Actualizar clase reservada');
@@ -293,7 +286,6 @@ $(document).ready(
                     addEvent.modal('show');
                     formEvent.removeClass("was-validated");
                     formEvent[0].reset();
-                    $("#event-title").val();
                     $('#event-category').val();
                     modalTitle.text('Add Event');
                     newEventData = info;
@@ -302,13 +294,11 @@ $(document).ready(
                 $(formEvent).on('submit', function(ev) {
                     ev.preventDefault();
                     var inputs = $('#form-event :input');
-                    var title = $("#event-title").val();
                     var startTime = $('#event-startTime').val()
                     var daysOfWeek = $('#event-daysOfWeek').val()
                     var course_id = $('#course_id').find(':selected').val()
 
                     var temp_event = {
-                        title: title,
                         startTime: startTime,
                         daysOfWeek: daysOfWeek,
                         className: "bg-info",

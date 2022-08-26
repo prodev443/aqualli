@@ -39,7 +39,7 @@ class SchedulesModel extends MainModel
 
 	public function listAll($whereArray = null)
 	{
-		$this->select('courses.name AS course_name');
+		$this->select('courses.name AS title');
 		$this->join('courses', 'schedules.course_id = courses.id');
 		return parent::listAll($whereArray);
 	}
