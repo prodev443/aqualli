@@ -51,6 +51,23 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
+<!-- Termina formulario -->
+
+<!-- Tabla de cursos y calificaciones -->
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">
+                Cursos del alumno
+            </h4>
+            <div class="row">
+                <div id="courses-table"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Termina tabla de cursos y calificaciones -->
+
 <script>
 $(document).ready(
     function() {

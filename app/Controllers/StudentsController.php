@@ -293,4 +293,18 @@ class StudentsController extends MasterController
         return $this->response->setJSON($model->select2Get($fields));
     }
 
+    /**
+     * Devuelve los cursos del alumno
+     *
+     * Respuesta JSON por GET
+     *
+     * @param string $student_id
+     * @return 
+     **/
+    public function getCourses(string $student_id)
+    {
+        $result = $this->model->getCourses($student_id);
+        return $this->response->setJSON($result);
+    }
+
 }

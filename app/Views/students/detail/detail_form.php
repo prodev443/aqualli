@@ -1,5 +1,6 @@
 <form id="student-form">
     <input type="hidden" id="id" name="id" value="<?=$student['id']?>">
+    <div id="student-data" data-id="<?= $student['id'] ?>" hidden></div>
     <div class="row">
         <div class="d-flex gap-2 flex-wrap">
             <div class="mb-3">

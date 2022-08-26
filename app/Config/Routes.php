@@ -78,6 +78,7 @@ $routes->group('students', function($routes){
 		$routes->post('update', 'StudentsController::update');
 		$routes->delete('delete', 'StudentsController::delete');
 		$routes->delete('delete_photo', 'StudentsController::deletePhoto');
+		$routes->get('courses/(:num)', 'StudentsController::getCourses/$1');
 	});
 });
 
