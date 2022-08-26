@@ -43,11 +43,5 @@ class StudentsModel extends MainModel
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	protected function setCheckboxes(array $data, $fields = null)
-	{
-		$fields = ['is_active'];
-		return parent::setCheckboxes($data, $fields);
-	}
 	
 }

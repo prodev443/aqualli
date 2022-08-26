@@ -11,7 +11,7 @@ $this->setVar('scripts', array(
     'assets/custom/js/ajax.js', // AJAX requests con token
     'assets/libs/tabulator/js/tabulator.min.js',
     'assets/custom/js/table_library.js', // Funciones para tabulator
-    'assets/custom/js/popups.js',
+    'assets/js/students/detail.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -55,105 +55,7 @@ $this->setVar('scripts', array(
 $(document).ready(
     function() {
         tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-
-        documents_table = new Tabulator("#documents-table", {
-            ajaxURL: "<?=esc(base_url('students/documents/'.$student['id']),'js')?>/",
-            layout: "fitDataFill",
-            // responsiveLayout:true,
-            columns: [{
-                    formatter: "rowSelection",
-                    titleFormatter: "rowSelection",
-                    headerSort: false
-                },
-                {
-                    title: "Documento",
-                    field: "name",
-                    headerFilter: "input",
-                    formatter: function(cell) {
-                        let id = cell.getRow().getData().id
-                        let html =
-                            '<a href="<?= esc(base_url('students/documents/download'), 'js') ?>/' +
-                            id + '">' + cell.getValue() + '</a>'
-                        return html
-                    },
-                },
-                {
-                    title: "Decripción",
-                    field: "description",
-                    headerFilter: "input",
-                },
-                {
-                    title: "Acciones",
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        let id = cell.getRow().getData().id
-                        let html =
-                            '<button type=\'button\' class="btn btn-success btn-rounded waves-effect waves-light" onclick="editDocument(\'' +
-                            id + '\')"><i class="bx bx-pencil"></i></a>'
-                        return html
-                    },
-                },
-            ],
-        });
     }
 )
-
-// Alumnos
-
-function deletePhoto() {
-    let delete_url = '<?=esc(base_url('students/resources/delete_photo'),'js')?>'
-    deleteInput(delete_url).then((data) => {
-        if (data.errors === undefined) {
-            $('#photo').remove()
-            $('#delete_photo_btn').remove()
-        }
-    })
-}
-
-// Documentos
-
-function addDocument() {
-    let pageURL = '<?=base_url('students/documents/create/'.$student['id'])?>'
-    createPopup(pageURL, 'Nuevo Documento', 500, 400)
-}
-
-function editDocument(id) {
-    let pageURL = '<?=base_url('students/documents/edit')?>/' + id
-    createPopup(pageURL, 'Editar Documento', 500, 400)
-}
-
-function uploadDocument(doc_form) {
-    let post_url = '<?= esc(base_url('students/documents/insert'), 'js') ?>'
-    postData(doc_form, post_url).then(() => {
-        documents_table.replaceData()
-    })
-
-}
-
-function updateDocument(doc_form) {
-    let post_url = '<?= esc(base_url('students/documents/update'), 'js') ?>'
-    postData(doc_form, post_url).then(() => {
-        documents_table.replaceData()
-    })
-
-}
-
-function deleteSelectedDocuments(data) {
-    let collection = [];
-    data.forEach(element => {
-        let aux = {
-            'id': element,
-        }
-        collection.push(aux)
-    });
-
-    collection = {
-        records: collection
-    }
-
-    deleteData(collection, '<?=base_url('students/documents/delete')?>').then(() => {
-        documents_table.replaceData()
-    })
-}
 </script>
 <?= $this->endSection(); ?>

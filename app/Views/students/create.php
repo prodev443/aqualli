@@ -11,7 +11,8 @@ $this->setVar('css_styles', array(
 $this->setVar('scripts', array(
     'assets/libs/sweetalert2/sweetalert2.min.js',
     'assets/libs/select2/js/select2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
+    'assets/custom/js/ajax.js',
+    'assets/js/students/create.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -92,6 +93,13 @@ $this->setVar('scripts', array(
                                 placeholder="+34 61 23 89 56">
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                          <label for="group_id" class="form-label">Grupo</label>
+                          <select class="form-control" name="group_id" id="group_id" required>
+                          </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -118,6 +126,7 @@ $this->setVar('scripts', array(
                 <div class="row">
                     <div class="col-md-2">
                         <div class="mb-3">
+                            <input type="hidden" name="is_active" value="0">
                             <input type="checkbox" class="form-check-input" name="is_active" checked value="1">
                             <label for="is_active" class="form-label">Activo</label>
                         </div>

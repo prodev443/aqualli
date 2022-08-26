@@ -17,12 +17,13 @@
                     Formatos&nbsp;<i class="mdi mdi-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" target="_blank"><i class="mdi mdi-eye label-icon"></i>&nbsp;En construcción</a>
+                    <a class="dropdown-item" href="#" target="_blank"><i class="mdi mdi-eye label-icon"></i>&nbsp;En
+                        construcción</a>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <?php if (! empty($student['photo_path'])): ?>
     <div class="row" id="photo">
         <div>
@@ -52,6 +53,13 @@
                 <label for="second_last_name" class="form-label">Apellido Materno</label>
                 <input type="text" class="form-control" id="second_last_name" name="second_last_name"
                     value="<?=$student['second_last_name']?>" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div id="group_id-data" data-group_id="<?=$student['group_id']?>" hidden></div>
+            <div class="mb-3">
+              <label for="group" class="form-label">Grupo</label>
+              <input type="text" class="form-control" id="group" disabled>
             </div>
         </div>
     </div>

@@ -26,7 +26,7 @@ class GroupsController extends MasterController
 	public function select2groups()
 	{
 		$model = $this->model;
-		$fields = ['id','code','name'];
+		$fields = ['id','name'];
         if(isset($_GET['_type']) && $_GET['_type'] === 'query'){
 			$response = $model->select2Get($fields, 'name', 'both', $_GET['q'] ?? '');
             return $this->response->setJSON($response);
