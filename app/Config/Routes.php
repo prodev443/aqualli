@@ -149,6 +149,18 @@ $routes->group('schedules', function($routes){
 		$routes->get('select2', 'SchedulesController::select2Schedule');
 	});
 });
+
+// Calificaciones
+$routes->group('scores', function($routes){
+	$routes->group('resources', function($routes){
+		$routes->get('get', 'ScoresController::get');
+		$routes->get('get/(:num)', 'ScoresController::get/$1');
+		$routes->post('insert', 'ScoresController::insert');
+		$routes->post('update', 'ScoresController::update');
+		$routes->delete('delete', 'ScoresController::delete');
+	});
+});
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing

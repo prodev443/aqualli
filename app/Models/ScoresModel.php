@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-class StudentsModel extends MainModel
+class ScoresModel extends MainModel
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'students';
+	protected $table                = 'scores';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -41,35 +41,5 @@ class StudentsModel extends MainModel
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	/**
-	 * Obtiene una lista de los cursos del alumno
-	 *
-	 * @param string $student_id
-	 * @return array
-	 **/
-	public function getCourses(string $student_id)
-	{
-		$db = db_connect();
-		$result = $db->query('SELECT
-			students.id AS student_id,
-			courses.id AS course_id,
-			courses.`code` AS course_code,
-			courses.`name` AS course_name 
-		FROM
-			students
-			INNER JOIN groups ON students.group_id = groups.id
-			INNER JOIN schedules ON schedules.group_id = groups.id
-			INNER JOIN courses ON courses.id = schedules.group_id 
-		WHERE
-			students.deleted_at IS NULL 
-			AND groups.deleted_at IS NULL 
-			AND schedules.deleted_at IS NULL 
-			AND courses.deleted_at IS NULL 
-			AND students.id = ?
-		GROUP BY courses.id',
-		[$student_id])->getResultArray();
-		return $result;
-	}
 	
 }
