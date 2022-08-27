@@ -21,7 +21,7 @@ class CreateScoresTable extends Migration
             ],
             'score' => [
                 'type' => 'DECIMAL',
-                'constraint' => '2,1',
+                'constraint' => '3,1',
             ],
             'created_by' => [
                 'type' => 'INT',

@@ -82,12 +82,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
                         score: cell.getValue()
                     }
                     if(data.score_id == null){
-                        postJSONData(record, insert_url)
+                        postJSONData(record, insert_url).then((data) => {
+                            coursesTable.replaceData()
+                        })
                     } else {
                         record.id = data.score_id
-                        postJSONData(record, update_url)
+                        postJSONData(record, update_url).then((data) => {
+                            coursesTable.replaceData()
+                        })
                     }
-                    coursesTable.replaceData()
                 },
             },
         ],
