@@ -27,7 +27,8 @@ $this->setVar('scripts', array(
                 <div class="col-sm-6">
                     <div class="d-flex flex-row-reverse bd-highlight">
                         <div class="p-2 bd-highlight">
-                            <a href="<?=base_url('users/detail/'.$user['id'])?>"><i class="bx bx-arrow-back"></i>&nbsp;Regresar</a>
+                            <a href="<?=base_url('users/detail/'.$user['id'])?>"><i
+                                    class="bx bx-arrow-back"></i>&nbsp;Regresar</a>
                         </div>
                     </div>
                 </div>
@@ -35,6 +36,31 @@ $this->setVar('scripts', array(
 
             <form id="user_form">
                 <input type="hidden" id="id" name="id" value="<?=$user['id']?>">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                value="<?=$user['first_name']?>">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="first_last_name" class="form-label">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="first_last_name" name="first_last_name"
+                                value="<?=$user['first_last_name']?>">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="second_last_name" class="form-label">Apellido Materno</label>
+                            <input type="text" class="form-control" id="second_last_name" name="second_last_name"
+                                value="<?=$user['second_last_name']?>">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
@@ -71,8 +97,9 @@ $this->setVar('scripts', array(
                     </div>
                     <div class="col-md-3">
                         <div class="mb-3">
-                          <label for="phone" class="form-label">Teléfono</label>
-                          <input type="tel" class="form-control" name="phone" id="phone" value="<?= $user['phone'] ?>" >
+                            <label for="phone" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" name="phone" id="phone"
+                                value="<?= $user['phone'] ?>">
                         </div>
                     </div>
                 </div>
@@ -83,7 +110,7 @@ $this->setVar('scripts', array(
                             <div class="form-check">
                                 <input type="hidden" name="is_active" value="0">
                                 <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
-                                    value="1" <?= $user['is_active'] == 1 ? 'checked' : '' ?> >
+                                    value="1" <?= $user['is_active'] == 1 ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="is_active">
                                     Activo
                                 </label>
@@ -96,10 +123,12 @@ $this->setVar('scripts', array(
                     <div class="col-md-6">
                         <div class="mb-3">
                             <div>
-                                <button type="button" class="btn btn-primary btn-label" onclick="postForm('user_form', '<?=esc(base_url('users/resources/update'),'js')?>', '<?= esc(base_url('users/detail/'.$user['id']),'js')?>')">
+                                <button type="button" class="btn btn-primary btn-label"
+                                    onclick="postForm('user_form', '<?=esc(base_url('users/resources/update'),'js')?>', '<?= esc(base_url('users/detail/'.$user['id']),'js')?>')">
                                     <i class="bx bx-save label-icon"></i>&nbsp;Guardar
                                 </button>&nbsp;
-                                <a type="button" class="btn btn-danger btn-label" onclick="deleteInput('<?=esc(base_url('users/resources/delete'),'js')?>', '<?=esc(base_url('users'),'js')?>')">
+                                <a type="button" class="btn btn-danger btn-label"
+                                    onclick="deleteInput('<?=esc(base_url('users/resources/delete'),'js')?>', '<?=esc(base_url('users'),'js')?>')">
                                     <i class="mdi mdi-delete label-icon"></i>&nbsp;Eliminar
                                 </a>
                             </div>

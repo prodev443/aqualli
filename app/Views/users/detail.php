@@ -40,13 +40,39 @@ $this->setVar('scripts', array(
                                 <i class="mdi mdi-pencil label-icon"></i>&nbsp;Editar
                             </a>&nbsp;
                             <!-- Pendiente la función para mostrar un popup de actualización del password -->
-                            <button type="button" class="btn btn-info btn-label" onclick="createPopup('<?= esc(base_url('users/update_password/'.$user['id'])) ?>', 'Actualización de la contraseña', 500, 500)">
+                            <button type="button" class="btn btn-info btn-label"
+                                onclick="createPopup('<?= esc(base_url('users/update_password/'.$user['id'])) ?>', 'Actualización de la contraseña', 500, 500)">
                                 <i class="bx bxs-key label-icon"></i>&nbsp;Actualizar contraseña
                             </button>
                         </div>
                     </div>
                 </div>
                 <input type="hidden" name="id" id="id" value="<?=$user['id']?>">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                value="<?=$user['first_name']?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="first_last_name" class="form-label">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="first_last_name" name="first_last_name"
+                                value="<?=$user['first_last_name']?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="second_last_name" class="form-label">Apellido Materno</label>
+                            <input type="text" class="form-control" id="second_last_name" name="second_last_name"
+                                value="<?=$user['second_last_name']?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
@@ -78,8 +104,9 @@ $this->setVar('scripts', array(
                     </div>
                     <div class="col-md-3">
                         <div class="mb-3">
-                          <label for="phone" class="form-label">Teléfono</label>
-                          <input type="tel" class="form-control" name="phone" id="phone" value="<?= $user['phone'] ?>" readonly >
+                            <label for="phone" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" name="phone" id="phone" value="<?= $user['phone'] ?>"
+                                readonly>
                         </div>
                     </div>
                 </div>

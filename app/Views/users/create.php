@@ -33,10 +33,32 @@ $this->setVar('scripts', array(
                 </div>
                 <form id="user_form">
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="first_last_name" class="form-label">Apellido Paterno</label>
+                                <input type="text" class="form-control" id="first_last_name" name="first_last_name">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="second_last_name" class="form-label">Apellido Materno</label>
+                                <input type="text" class="form-control" name="second_last_name" id="second_last_name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="role_id" class="form-label">Rol</label>
-                                <select id="role_id" name="role_id" class="select2-search form-select" data-live-search="true">
+                                <select id="role_id" name="role_id" class="select2-search form-select"
+                                    data-live-search="true">
                                     <?php
                                     if (session()->get('role') === 'admin') {
                                         $condition = [];
@@ -47,7 +69,8 @@ $this->setVar('scripts', array(
                                     $roles = $roles_model->where($condition)->findAll();
                                     foreach($roles as $role):
                                     ?>
-                                    <option data-tokens="<?=$role['role']?>" value="<?=$role['id']?>" ><?=$role['description']?></option>
+                                    <option data-tokens="<?=$role['role']?>" value="<?=$role['id']?>">
+                                        <?=$role['description']?></option>
                                     <?php endforeach;?>
                                 </select>
                             </div>
@@ -61,8 +84,8 @@ $this->setVar('scripts', array(
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
-                              <label for="phone" class="form-label">Teléfono</label>
-                              <input type="tel" class="form-control" name="phone" id="phone">
+                                <label for="phone" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" name="phone" id="phone">
                             </div>
                         </div>
                     </div>
@@ -72,7 +95,8 @@ $this->setVar('scripts', array(
                                 <div class="d-sm-none d-md-block" style="height: 27.5px;"></div>
                                 <div class="form-check">
                                     <input type="hidden" name="is_active" value="0">
-                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
+                                        value="1" checked>
                                     <label class="form-check-label" for="is_active">
                                         Activo
                                     </label>
@@ -89,13 +113,15 @@ $this->setVar('scripts', array(
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="passconf" class="form-label">Confirmar contraseña</label>
-                                <input type="password" class="form-control" id="passconf" placeholder="Contraseña" name="passconf">
+                                <input type="password" class="form-control" id="passconf" placeholder="Contraseña"
+                                    name="passconf">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <div style="height: 27.5px;"></div>
-                                <button id="save_button" type="button" class="btn btn-primary btn-label" onclick="postForm('user_form', '<?=esc(base_url('users/resources/insert'),'js')?>', '<?=esc(base_url('users'),'js')?>')">
+                                <button id="save_button" type="button" class="btn btn-primary btn-label"
+                                    onclick="postForm('user_form', '<?=esc(base_url('users/resources/insert'),'js')?>', '<?=esc(base_url('users'),'js')?>')">
                                     <i class="bx bxs-save label-icon"></i>&nbsp;Registrar
                                 </button>
                             </div>
@@ -109,10 +135,10 @@ $this->setVar('scripts', array(
     </div>
 </div>
 <script>
-    $(document).ready(
-        function() {
-            tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-        }
-    )
+$(document).ready(
+    function() {
+        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
+    }
+)
 </script>
 <?= $this->endSection(); ?>

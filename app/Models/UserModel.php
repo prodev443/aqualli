@@ -11,7 +11,7 @@ class UserModel extends MainModel{
     protected $insertID = 0;
     protected $returnType = 'array';
     protected $useSoftDeletes = true;
-    protected $protectFields = true;
+    protected $protectFields = false;
 
     // Dates
     protected $useTimestamps = true;
