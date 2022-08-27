@@ -62,7 +62,7 @@ class StudentsModel extends MainModel
 			students
 			INNER JOIN groups ON students.group_id = groups.id
 			INNER JOIN schedules ON schedules.group_id = groups.id
-			INNER JOIN courses ON courses.id = schedules.group_id
+			INNER JOIN courses ON courses.id = schedules.course_id
 			LEFT JOIN scores ON  students.id = scores.student_id AND courses.id = scores.course_id
 		WHERE
 			students.deleted_at IS NULL 

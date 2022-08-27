@@ -10,6 +10,7 @@ $this->setVar('css_styles', array(
 $this->setVar('scripts', array(
     'assets/libs/tabulator/js/tabulator.min.js',
     'assets/libs/sweetalert2/sweetalert2.min.js',
+    'assets/js/groups/list.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -23,40 +24,12 @@ $this->setVar('scripts', array(
                 </a>
                 <br><br>
                 <!-- tabulator -->
-                <div class="row col-12 table-responsive">
-                    <div id="groups_table"></div>
+                <div class="row col-12">
+                    <div id="groups-container" class="d-flex flex-wrap gap-2"></div>
                 </div>                
 
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    let groups_table;
-    let current_course_id;
-
-    // Tabla
-    $(document).ready(() => {
-        groups_table = new Tabulator("#groups_table", {
-            ajaxURL: "<?=esc(base_url('groups/resources/get'),'js')?>",
-            layout: "fitDataFill",
-            pagination:true,
-            paginationSize:10,
-            columns: [
-                {
-                    title: "Grupo",
-                    field: "name",
-                    headerFilter:"input",
-                    formatter:function(cell){
-                        let base_url = '<?=base_url('groups/detail')?>'
-                        let id = cell.getRow().getData().id
-                        let html = '<a href="'+base_url + '/' + id +'" style="color: blue;">' + cell.getValue() + '</a>'
-                        return html
-                    },
-                },
-            ],
-        });
-    })
-</script>
 <?= $this->endSection(); ?>
