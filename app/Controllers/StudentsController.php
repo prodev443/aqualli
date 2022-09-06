@@ -2,20 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Libraries\Email;
-use App\Libraries\PDFLib;
-use App\Models\CurrentCoursesStudentsModel;
-use App\Models\EmailSubmissionsModel;
-use App\Models\PdfModel;
 use App\Models\StudentsModel;
-use App\Models\UserModel;
-use Exception;
 
 class StudentsController extends MasterController
 {
-
-    protected $model = null;
-    protected $controllerName = 'StudentsController';
+    protected $validation_rules = [
+        'photo' => 'mime_in[photo,image/jpeg,image/pjpeg]',
+    ];
+    protected $validation_errors = [
+        'photo' => [
+            'mime_in' => 'Solo se admite formato JPG para imágenes',
+        ],
+    ];
 
     public function __construct()
     {
@@ -28,202 +26,90 @@ class StudentsController extends MasterController
     // * Método POST de inserción
     public function insert()
     {
+        try {
+            if ($this->validate($this->validation_rules, $this->validation_errors)) {
+                $photo = $this->request->getFile('photo'); // Archivo de fotografía
 
-        $response = []; // Respuesta JSON
+                if ($photo !== null && $photo->isValid()) {
+                    $_POST['photo_path'] = $photo->getRandomName();
+                }
 
-        $validation_rules = [
-            'photo' => 'mime_in[photo,image/jpeg,image/pjpeg]',
-        ];
-        $validation_errors = [
-            'photo' => [
-                'mime_in' => 'Solo se admite formato JPG para imágenes',
-            ],
-        ];
+                if (!$this->setResponseStatus($this->model->customInsert($_POST))) {
+                    throw new \Exception();
+                }
 
-        if ($this->validate($validation_rules, $validation_errors)) {
-
-            $photo = $this->request->getFile('photo'); // Archivo de fotografía
-
-            if ($photo !== null && $photo->isValid()) {
-
-                $photo_path = $photo->getRandomName();
-
-                // Añadir la información de la nueva foto a $_POST
-
-                $_POST['photo_path'] = $photo_path;
-
-            }
-
-            // Actualización de datos en el modelo
-            if ($this->checkModel()) {
-                $model = $this->model;
-                $result = $model->customInsert($_POST);
-                switch ($result) {
-                    case 'db_error':
-                        $response['errors'] = $model->errors();
-                        break;
-                    case 'not_allowed':
-                        $response['errors'] = ['Acceso Restringido'];
-                        break;
+                if ($photo !== null && $photo->isValid()) {
+                    $photo->store('students/', $_POST['photo_path']);
                 }
             } else {
-                $response['error'] = ['Error de sistema'];
+                $errors = $this->validator->getErrors();
+                $this->response->setStatusCode(500, array_pop($errors));
             }
-
-        } else {
-            $response['errors'] = $this->validator->getErrors();
-        }
-
-        if (!isset($response['errors'])) {
-
-            if ($photo !== null && $photo->isValid()) {
-                // Subir foto al servidor
-                $photo->store('students/', $photo_path);
-
-            }
+        } finally {
         }
 
         $response['token'] = csrf_hash();
-
         return $this->response->setJSON($response);
-
     }
 
     // * Método POST de actualización
     public function update()
     {
+        try {
+            if ($this->validate($this->validation_rules, $this->validation_errors)) {
+                $photo = $this->request->getFile('photo'); // Archivo de fotografía
+                $current_info = $this->model->select('photo_path')->where('id', $_POST['id'])->first();
 
-        $response = []; // Respuesta JSON
-
-        $validation_rules = [
-            'photo' => 'mime_in[photo,image/jpeg,image/pjpeg]',
-        ];
-        $validation_errors = [
-            'photo' => [
-                'mime_in' => 'Solo se admite formato JPG para imágenes',
-            ],
-        ];
-
-        if ($this->validate($validation_rules, $validation_errors)) {
-
-            $photo = $this->request->getFile('photo'); // Archivo de fotografía
-
-            $current_info = $this->model->select('photo_path')->where(['id' => $_POST['id'] ?? ''])->first();
-
-            if ($photo !== null && $photo->isValid()) {
-
-                $photo_path = $photo->getRandomName();
-
-                // Añadir la información de la nueva foto a $_POST
-
-                $_POST['photo_path'] = $photo_path;
-
-                // Obtiene información de foto antigua
-                if (!empty($current_info)) {
-                    $old_photo_path = WRITEPATH . 'uploads/students/' . $current_info['photo_path'];
+                if ($photo !== null && $photo->isValid()) {
+                    $_POST['photo_path'] = $photo->getRandomName();
                 }
-            }
 
-            // Actualización de datos en el modelo
-            if ($this->checkModel()) {
-                $model = $this->model;
-                if (isset($_POST['id'])) {
-                    $result = $model->customSave($_POST);
-                    switch ($result) {
-                        case 'db_error':
-                            $response['errors'] = $model->errors();
-                            break;
-                        case 'not_allowed':
-                            $response['errors'] = ['Acceso Restringido'];
-                            break;
-                    }
-                } else {
-                    $response['errors'] = ['Datos Faltantes'];
+                if (!$this->setResponseStatus($this->model->customSave($_POST))) {
+                    throw new \Exception();
+                }
+
+                if ($photo !== null && $photo->isValid()) {
+                    $photo->store('students/', $_POST['photo_path']);
+                    deleteFile(WRITEPATH . "uploads/students/" . $current_info['photo_path'] ?? '');
                 }
             } else {
-                $response['error'] = ['Error de sistema'];
+                $errors = $this->validator->getErrors();
+                $this->response->setStatusCode(500, array_pop($errors));
             }
-
-        } else {
-            $response['errors'] = $this->validator->getErrors();
-        }
-
-        if (!isset($response['errors'])) {
-
-            if ($photo !== null && $photo->isValid()) {
-                // Subir foto al servidor
-                $photo->store('students/', $photo_path);
-                // Eliminar foto antigua del directorio de subidas
-                if (isset($old_photo_path)) {
-                    if (is_file($old_photo_path)) {
-                        unlink($old_photo_path);
-                    }
-                }
-            }
+        } catch(\Throwable $th) {
+            log_message('critical', $th);
+            $this->response->setStatusCode(500, 'Faltan datos para la solicitud');
         }
 
         $response['token'] = csrf_hash();
-
         return $this->response->setJSON($response);
     }
 
     // * Método DELETE de eliminación
     public function delete()
     {
+        try {
+            parse_str(file_get_contents('php://input'), $_DELETE);
+            $current_info = $this->model->select('photo_path')->where(['id' => $_DELETE['id']])->first();
 
-        $response = []; // Respuesta JSON
-
-        parse_str(file_get_contents('php://input'), $_DELETE);
-
-        $current_info = $this->model->select('photo_path')->where(['id' => $_DELETE['id'] ?? ''])->first();
-
-        if (!empty($current_info)) {
-            $old_photo_path = WRITEPATH . 'uploads/students/' . $current_info['photo_path'];
-        }
-
-        // Actualización de datos en el modelo
-        if ($this->checkModel()) {
-            $model = $this->model;
-            if (isset($_DELETE['id'])) {
-                $result = $model->customDelete($_DELETE['id']);
-                switch ($result) {
-                    case 'db_error':
-                        $response['errors'] = $model->errors();
-                        break;
-                    case 'not_allowed':
-                        $response['errors'] = ['Acceso Restringido'];
-                        break;
-                }
-            } else {
-                $response['errors'] = ['Datos Faltantes'];
-            }
-        } else {
-            $response['error'] = ['Error de sistema'];
-        }
-
-        if (!isset($response['errors'])) {
-
-            if (isset($old_photo_path)) {
-                if (is_file($old_photo_path)) {
-                    unlink($old_photo_path);
-                }
+            if (!$this->setResponseStatus($this->model->customDelete($_DELETE['id']))) {
+                throw new \Exception();
             }
 
+            deleteFile(WRITEPATH . "uploads/students/" . $current_info['photo_path'] ?? '');
+        } catch(\Throwable $th) {
+            log_message('critical', $th);
+            $this->response->setStatusCode(500, 'Faltan datos para la solicitud');
         }
-
         $response['token'] = csrf_hash();
-
         return $this->response->setJSON($response);
-
     }
 
     // * Obtiene la foto del alumno
     public function getPhoto($student_id)
     {
-
-        $student = $this->model->find($student_id);
-
-        if (!empty($student)) {
+        try {
+            $student = $this->model->find($student_id);
             $photo_path = WRITEPATH . 'uploads/students/' . $student['photo_path'];
             if (is_file($photo_path)) {
                 $mime = mime_content_type($photo_path); //<-- detect file type
@@ -233,44 +119,29 @@ class StudentsController extends MasterController
                 readfile($photo_path); //<--reads and outputs the file onto the output buffer
                 exit();
             }
-        } else {
-            return view('errors/restricted');
+        } catch (\Throwable $th) {
+            log_message('critical', $th);
+            return $this->response->setStatusCode(403, 'Sin acceso al archivo');
         }
-
     }
 
-    // * Elimina la fotografía del estudiante
+    // * Elimina la fotografía del alumno
     public function deletePhoto()
     {
-        $response = [];
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        if (isset($_DELETE['id'])) {
-            $student_id = $_DELETE['id'];
-            $model = $this->model;
-            $current_info = $model->find($student_id);
-            if (!empty($current_info)) {
-                $old_photo_path = WRITEPATH . 'uploads/students/' . $current_info['photo_path'];
+        try {
+            parse_str(file_get_contents('php://input'), $_DELETE);
+            $current_info = $this->model->find($_DELETE['id']);
+            $update_data = ['id' => $_DELETE['id'], 'photo_path' => ''];
+            if (!$this->setResponseStatus($this->model->customSave($update_data))) {
+                throw new \Exception();
             }
-            $update_data = ['id' => $student_id, 'photo_path' => ''];
-            $result = $model->customSave($update_data);
-            switch ($result) {
-                case 'db_error':
-                    $response['errors'] = $model->errors();
-                    break;
-                case 'not_allowed':
-                    $response['errors'] = ['Acceso Restringido'];
-                    break;
-            }
-            if (!isset($response['errors'])) {
-                if (isset($old_photo_path)) {
-                    if (is_file($old_photo_path)) {
-                        unlink($old_photo_path);
-                    }
-                }
-            }
-        } else {
-            $response['errors'] = ['Datos Faltantes'];
+            deleteFile(WRITEPATH . "uploads/students/" . $current_info['photo_path'] ?? '');
+        } catch(\Throwable $th) {
+            log_message('critical', $th);
+            $this->response->setStatusCode(500, 'Faltan datos para la solicitud');
         }
+        $response['token'] = csrf_hash();
+        return $this->response->setJSON($response);
     }
 
     /**
@@ -299,12 +170,11 @@ class StudentsController extends MasterController
      * Respuesta JSON por GET
      *
      * @param string $student_id
-     * @return 
+     * @return
      **/
     public function getCourses(string $student_id)
     {
         $result = $this->model->getCourses($student_id);
         return $this->response->setJSON($result);
     }
-
 }

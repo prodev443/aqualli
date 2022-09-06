@@ -129,4 +129,10 @@
             </div>
         </div>
     </div>
+
+    <div>
+        <button type="button" class="btn btn-primary btn-label" id="gen-user-btn">
+            <i class="fas fa-user"></i>&nbsp;Generar usuario
+        </button>
+    </div>
 </form>

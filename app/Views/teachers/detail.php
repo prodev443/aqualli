@@ -1,12 +1,9 @@
 <?php
 $this->setVar('title', 'Detalle');
 $this->setVar('pagetitle', 'Profesores');
-$this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
-));
+$this->setVar('css_styles', array());
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
+    'assets/js/teachers/detail.js'
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -28,7 +25,7 @@ $this->setVar('scripts', array(
                 </div>
             </div>
             <form id="teacher-form">
-                <input type="hidden" id="id" value="<?= $teacher['id'] ?>">
+                <input type="hidden" id="teacher-id" value="<?= $teacher['id'] ?>">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
@@ -36,7 +33,7 @@ $this->setVar('scripts', array(
                                 <i class="bx bxs-pencil label-icon"></i> Editar
                             </a>&nbsp;
                             <?php if (! empty($teacher['photo_path'])): ?>
-                            <button id="delete_photo_btn" type="button" class="btn btn-danger btn-label" onclick="deletePhoto()">
+                            <button id="deletePhotoBtn" type="button" class="btn btn-danger btn-label">
                                 <i class="bx bxs-trash label-icon"></i>Eliminar fotografía
                             </button>
                             <?php endif; ?>
@@ -122,7 +119,7 @@ $this->setVar('scripts', array(
                     </div>
                 </div>
 
-                <div class="row">
+                <div id="cv-container" class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="cv" class="form-label">Currículum Vitae</label>
@@ -131,7 +128,7 @@ $this->setVar('scripts', array(
                                     <a type="button" href="<?= base_url('teachers/resources/getcv/'.$teacher['id']) ?>" class="btn btn-info btn-label">
                                         <i class="bx bx-file label-icon"></i> Descargar CV
                                     </a>&nbsp;
-                                    <button id="" type="button" class="btn btn-danger btn-label" onclick="deleteCV()">
+                                    <button id="deleteCvBtn" type="button" class="btn btn-danger btn-label">
                                         <i class="bx bxs-trash label-icon"></i> Eliminar CV
                                     </button>
                                 </div>
@@ -154,31 +151,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-    $(document).ready(
-        function () {
-            tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-        }
-    )
-
-    function deletePhoto() {
-        let delete_url = '<?=esc(base_url('teachers/resources/delete_photo'),'js')?>'
-        deleteInput(delete_url).then((data) => {
-            if(data.errors === undefined){
-                $('#photo').remove()
-                $('#delete_photo_btn').remove()
-            }
-        })
-    }
-
-    function deleteCV() {
-        let delete_url = '<?=esc(base_url('teachers/resources/delete_cv'),'js')?>'
-        deleteInput(delete_url).then((data) => {
-            if(data.errors === undefined){
-                $('#cv').replaceWith('<p class="form-control">Archivo no disponible</p>')
-            }
-        })
-    }
-
-</script>
 <?= $this->endSection(); ?>

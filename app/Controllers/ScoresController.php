@@ -7,7 +7,6 @@ use App\Models\ScoresModel;
 class ScoresController extends MasterController
 {
 
-    protected $model = null;
     protected $controllerName = 'ScoresController';
 
     public function __construct()

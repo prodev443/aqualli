@@ -59,6 +59,7 @@ $routes->group('users', function($routes){
 	$routes->get('update_password/(:num)', 'UsersController::showPasswordUpdatePopup/$1');
 	$routes->get('resources/list', 'UsersController::listJSON');
 	$routes->post('resources/insert', 'UsersController::insert');
+	$routes->post('resources/alt_insert', 'UsersController::alternateInsert');
 	$routes->post('resources/update', 'UsersController::update');
 	$routes->delete('resources/delete', 'UsersController::delete');
 });

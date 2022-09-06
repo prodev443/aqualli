@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use CodeIgniter\Model;
+use Exception;
 
 class UserModel extends MainModel{
     protected $table      = 'users';
@@ -193,6 +193,45 @@ class UserModel extends MainModel{
             }
         } else {
             return [];
+        }
+    }
+
+    /**
+     * Inserta un registro en la tabla
+     *
+     * * Devuelve un string 'not_allowed' si el usuario no tiene permisos
+     *
+     * @param array $data
+     * @param bool $returnId
+     *
+     * @return mixed 'success' | 'not_allowed' | 'db_error' | id
+     **/
+    public function customInsert($data = null, $returnId = false)
+    {
+        if($this->checkPermissions('create')){
+            try {
+                if($returnId){
+                   $result = parent::insert($data, true); 
+                }
+                if($result === false){
+                    return 'db_error';
+                } elseif($returnId) {
+                    return $result;
+                }
+                return 'success';
+            } catch (Exception $e) {
+                $db_error = $this->db->error();
+                if($db_error['code'] === 1062){
+                    // 1062 es un error de entrada duplicada para un índice.
+                    // No se notifica al usuario
+                    return 'success';
+                } else {
+                    log_message('critical', 'Error en la base de datos: '.var_export($db_error, true));
+                    return 'db_error';
+                }
+            }
+        } else {
+            return 'not_allowed';
         }
     }
 }

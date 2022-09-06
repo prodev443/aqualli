@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\MainModel;
 
 /**
  * Controlador base
@@ -11,39 +12,31 @@ use App\Controllers\BaseController;
 
 class MasterController extends BaseController {
 
-    protected $model = null; // * Modelo del controlador
+    protected MainModel $model; // * Modelo del controlador
     protected $main_route = null; // * Ruta principal del controlador o módulo (solo letras)
     protected $view_subdir = null; // * Subdirectorio de vistas en views/* sin '/' (solo letras)
     protected $view_varname = null; // * Nombre de la variable utilizada en la vista: view($view_subdir.'', ["{$view_varname}" => $result])
 
     /**
-     * Vertifica si $this->model es subclase de Model
-     *
+     * * Asigna el estado de la respuesta a la solicitud en
+     * * base a la respuesta del modelo
+     * @param string $modelResult
      * 
-     * @return bool
-     **/
-    protected function checkModel()
+     * @return void
+     */
+    protected function setResponseStatus(string $modelResult): bool
     {
-        if (is_a($this->model, '\\App\\Models\\MainModel')) {
-            return true;
-        } else {
-            log_message('warning','Modelo no inicializado correctamente en '.static::class);
-            return false;
-        }
-    }
-
-    /**
-     * Verifica variables necesarias para el funcionamiento del controlador
-     *
-     * @return bool
-     **/
-    public function verifyVars()
-    {
-        if ($this->main_route !== null && $this->view_subdir !== null && $this->view_varname !== null) {
-            return true;
-        } else {
-            log_message('warning','verifyVars() error en: '.static::class);
-            return false;
+        switch ($modelResult) {
+            case 'db_error':
+                $this->response->setStatusCode(500, 'Error en la base de datos');
+                return false;
+            case 'not_allowed':
+                $this->response->setStatusCode(403, 'No se tiene acceso al recurso');
+                return false;
+            
+            default:
+                $this->response->setStatusCode(200, 'Solicitud completada');
+                return true;
         }
     }
 
@@ -55,11 +48,9 @@ class MasterController extends BaseController {
      */
     public function index()
     {
-		$model = $this->model;
-		if($this->checkModel() && $this->verifyVars() && $model->checkPermissions()){
+		if($this->model->checkPermissions()){
 			return view($this->view_subdir.'/list');
 		} else {
-            log_message('warning','Model check permissions: '.$model->checkPermissions());
 			return redirect()->route('login');
 		}
     }
@@ -73,7 +64,7 @@ class MasterController extends BaseController {
 	public function detail($id = null)
     {
         $model = $this->model;
-		if ($this->checkModel() && $this->verifyVars() && $model->checkPermissions()) {
+		if ($model->checkPermissions()) {
 			$result = $model->find($id);
 			if(empty($result)) return redirect()->route($this->main_route);
 			return view($this->view_subdir.'/detail', ["{$this->view_varname}" => $result]);
@@ -91,7 +82,7 @@ class MasterController extends BaseController {
     public function edit($id = null)
     {
         $model = $this->model;
-		if ($this->checkModel() && $this->verifyVars() && $model->checkPermissions('edit')) {
+		if ($model->checkPermissions('edit')) {
 			$result = $model->find($id);
 			if(empty($result)) return redirect()->route($this->main_route);
 			return view($this->view_subdir.'/edit', ["{$this->view_varname}" => $result]);
@@ -107,7 +98,7 @@ class MasterController extends BaseController {
     public function create()
     {
         $model = $this->model;
-		if ($this->checkModel() && $this->verifyVars() && $model->checkPermissions('create')) {
+		if ($model->checkPermissions('create')) {
 			return view($this->view_subdir.'/create');
 		} else {
 			return redirect()->route('home');
@@ -117,163 +108,78 @@ class MasterController extends BaseController {
     // Métodos de recuperación tipo API
 
 	/**
-	 * * Consulta todos los registros de una tabla
-     * 
-     * * Puede consultar solo un registro del id proporcionado
-     * * Consulta simple SELECT
-     * 
+     * * Consulta SELECT
      * 
 	 * @param string $id ID del registro
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function get($id = null)
 	{
-		$response = [];
-        if($this->checkModel()){
-            $model = $this->model;
-            if($id === null){
-                $response = $model->listAll();
-            } else {
-                $response = $model->find($id);
-            }
+        if($id === null){
+            $response = $this->model->listAll();
+        } else {
+            $response = $this->model->find($id);
         }
 		return $this->response->setJSON($response);
 	}
 
     /**
-	 * * Inserción de datos mediante HTTP POST
-     * * Solicitud POST CSRF
+	 * * HTTP POST INSERT
 	 *
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function insert()
 	{
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
-            $result = $model->customInsert($_POST);
-            switch ($result) {
-                case 'db_error':
-                    $response['errors'] = $model->errors();
-                    break;
-                case 'not_allowed':
-                    $response['errors'] = ['Acceso Restringido'];
-                    break;
-            }
-        } else {
-            $response['errors'] = ['Error de sistema'];
-            // Añadir log_message
-        }
+        $this->setResponseStatus($this->model->customInsert($_POST));
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);
 	}
 
     /**
-	 * * Actualización de datos mediante HTTP POST
-     * * Solicitud POST CSRF
+	 * * HTTP POST UPDATE
 	 *
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function update()
 	{
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
-            if(isset($_POST['id'])){
-                $result = $model->customSave($_POST);
-                switch ($result) {
-                    case 'db_error':
-                        $response['errors'] = $model->errors();
-                        break;
-                    case 'not_allowed':
-                        $response['errors'] = ['Acceso Restringido'];
-                        break;
-                }
-            } else {
-                $response['errors'] = ['Datos Faltantes'];
-            }
-        } else {
-            $response['errors'] = ['Error de sistema'];
-            // Añadir log_message
-        }
+        $this->setResponseStatus($this->model->customSave($_POST));
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);
 	}
 
     /**
-	 * * Elimina un array de datos mediante HTTP POST
-     * * Solicitud DELETE CSRF
-     * * Recibe una estructura de datos {token: token_hash, records: { 0 : {id: ''} }} en $_DELETE
-	 *
-	 * @return string JSON response
+     * * HTTP DELETE
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function delete(){
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
-            parse_str(file_get_contents('php://input'), $_DELETE);
-            if(isset($_DELETE['id'])){
-                $result = $model->customDelete($_DELETE['id']);
-                switch ($result) {
-                    case 'db_error':
-                        $response['errors'] = $model->errors();
-                        break;
-                    case 'not_allowed':
-                        $response['errors'] = ['Acceso Restringido'];
-                        break;
-                }
-            }  else {
-                $response['errors'] = ['Datos Faltantes'];
-                // log_message
-            }
-        } else {
-            $response['errors'] = ['Error de sistema'];
-            // Añadir log_message
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        try {
+            $this->setResponseStatus($this->model->customDelete($_DELETE['id']));
+        } catch (\Throwable $th) {
+            log_message('critical', $th);
+            $this->response->setStatusCode(500, 'Faltan parámetros en la solicitud');
         }
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);
 	}
 
 	/**
-	 * * Actualiza o inserta datos de forma masiva mediante HTTP POST
-     * * Solicitud POST CSRF
-     * * Recibe una estructura de datos {token: token_hash, records: { 0 : {...} }} en $_POST
+	 * * UPDATE | INSERT HTTP POST
+     * * Ej. POST: {records: { 0 : {...} }}
 	 *
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function updateArray()
 	{
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
-            if(isset($_POST['records']) && is_array($_POST['records'])){
-                foreach ($_POST['records'] as $record) {
-                    if(is_array($record)){
-                        if(isset($record['id'])){
-                            $result = $model->customSave($record);
-                        } else {
-                            $result = $model->customInsert($record);
-                        }
-                        switch ($result) {
-                            case 'db_error':
-                                $response['errors'] = $model->errors();
-                                break;
-                            case 'not_allowed':
-                                $response['errors'] = ['Acceso Restringido'];
-                                break;
-                        }
-                    } else {
-                        $response['errors'] = ['Los datos no pudieron ser actualizados'];
-                        log_message('warning',static::class.': Error en el formato JSON a la solicitud POST');
-                    }
+        try {
+            foreach ($_POST['records'] as $record) {
+                if (!$this->setResponseStatus($this->model->customSave($record))) {
+                    throw new \Throwable("Error en la base de datos"); 
                 }
-            } else {
-                $response['errors'] = ['Datos Faltantes'];
-                // log_message
             }
-        } else {
-            $response['errors'] = ['Error de sistema'];
-            // Añadir log_message
+        } catch (\Throwable $th) {
+            log_message('critical', $th);
+            $this->response->setStatusCode(500, 'Faltan parámetros en la solicitud');
         }
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);
@@ -284,41 +190,18 @@ class MasterController extends BaseController {
      * * Solicitud DELETE CSRF
      * * Recibe una estructura de datos {token: token_hash, records: { 0 : {id: ''} }} en $_DELETE
 	 *
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function deleteArray(){
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
+        try {
             parse_str(file_get_contents('php://input'), $_DELETE);
-            if(isset($_DELETE['records']) && is_array($_DELETE['records'])){
-                foreach ($_DELETE['records'] as $record) {
-                    if(is_array($record)){
-                        if(isset($record['id'])){
-                            $result = $model->customDelete($record['id']);
-                            switch ($result) {
-                                case 'db_error':
-                                    $response['errors'] = $model->errors();
-                                    break;
-                                case 'not_allowed':
-                                    $response['errors'] = ['Acceso Restringido'];
-                                    break;
-                            }
-                        } else {
-                            $response['errors'] = ['Error. 23'];
-                        }
-                    } else {
-                        $response['errors'] = ['Los datos no pudieron ser actualizados'];
-                        log_message('warning',static::class.': Error en el formato JSON a la solicitud POST');
-                    }
+            foreach ($_DELETE['records'] as $record) {
+                if (! $this->setResponseStatus($this->model->customDelete($record['id']))) {
+                    throw new \Exception("Error en la base de datos");
                 }
-            }  else {
-                $response['errors'] = ['Datos Faltantes'];
-                // log_message
             }
-        } else {
-            $response['errors'] = ['Error de sistema'];
-            // Añadir log_message
+        } catch (\Throwable $th) {
+            log_message('critical', $th);
         }
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);
@@ -326,46 +209,24 @@ class MasterController extends BaseController {
 
     /**
 	 * * Agrega un array de registros de relación m -m
-	 * * Solicitud POST CSRF
-	 * 
-	 * Utiliza insertRelated de MainModel
+	 * * POST
 	 * 
 	 * @param string $relationship Nombre de la tabla de relaciones
      * @param string $main_fk Nombre de la llave foránea de este modelo | tabla en la tabla de relaciones
      * @param string $related_fk Nombre de la llave foránea de la tabla relacionada en la tabla de relaciones
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
-	public function postRelated($relationship = '', $main_fk = '', $related_fk = '')
+	public function postRelated(string $relationship, string $main_fk, string $related_fk)
 	{
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
-            if(isset($_POST['records']) && is_array($_POST['records'])){
-                foreach ($_POST['records'] as $record) {
-                    if(is_array($record)){
-                        if(isset($record[$main_fk]) && isset($record[$related_fk])){
-							$result = $model->insertRelated($relationship, $main_fk,$related_fk, $record[$main_fk], $record[$related_fk]);
-                        } else {
-                            $result = 'missing_data';
-                            
-                        }
-                        switch ($result) {
-                            case 'db_error':
-                                $response['errors'] = $model->db->error()['message'];
-                                break;
-							case 'missing_data':
-                                $response['errors'] = ['Datos faltantes'];
-								break;
-                            case 'not_allowed':
-                                $response['errors'] = ['Acceso Restringido'];
-                                break;
-                        }
-                    } else {
-                        $response['errors'] = ['Los datos no pudieron ser actualizados'];
-                        log_message('warning',static::class.': Error en el formato JSON a la solicitud POST');
-                    }
+        try {
+            foreach ($_POST['records'] as $record) {
+                $result = $this->model->insertRelated($relationship, $main_fk,$related_fk, $record[$main_fk], $record[$related_fk]);
+                if (! $this->setResponseStatus($result)) {
+                    throw new \Exception("Error en la base de datos");
                 }
             }
+        } catch (\Throwable $th) {
+            log_message('critical', $th);
         }
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);
@@ -373,42 +234,26 @@ class MasterController extends BaseController {
 
     /**
 	 * * Elimina un array de registros de una relación
-     * * Protegido con CSRF DELETE
+     * * DELETE
 	 *
      * Utiliza deleteRelated de MainModel
 	 * 
 	 * @param string $relationship Nombre de la tabla de relaciones
      * @param string $main_fk Nombre de la llave foránea de este modelo | tabla en la tabla de relaciones
      * @param string $related_fk Nombre de la llave foránea de la tabla relacionada en la tabla de relaciones
-	 * @return string JSON response
+	 * @return \CodeIgniter\HTTP\ResponseInterface
 	 **/
 	public function deleteRelated($relationship = '', $main_fk = '', $related_fk = ''){
-		$response = [];
-        if ($this->checkModel()) {
-            $model = $this->model;
+        try {
             parse_str(file_get_contents('php://input'), $_DELETE);
-            if(isset($_DELETE['records']) && is_array($_DELETE['records'])){
-                foreach ($_DELETE['records'] as $record) {
-                    if(is_array($record)){
-                        if(isset($record[$main_fk]) && isset($record[$related_fk])){
-                            $result = $model->deleteRelated($relationship, $main_fk,$related_fk, $record[$main_fk], $record[$related_fk]);
-                            switch ($result) {
-                                case 'db_error':
-                                    $response['errors'] = $model->errors();
-                                    break;
-                                case 'not_allowed':
-                                    $response['errors'] = ['Acceso Restringido'];
-                                    break;
-                            }
-                        } else {
-                            $response['errors'] = ['Datos Faltantes'];
-                        }
-                    } else {
-                        $response['errors'] = ['Los datos no pudieron ser actualizados'];
-                        log_message('warning',static::class.': Error en el formato JSON a la solicitud POST');
-                    }
+            foreach ($_DELETE['records'] as $record) {
+                $result = $this->model->deleteRelated($relationship, $main_fk,$related_fk, $record[$main_fk], $record[$related_fk]);
+                if (! $this->setResponseStatus($result)) {
+                    throw new \Exception("Error en la base de datos");
                 }
             }
+        } catch (\Throwable $th) {
+            log_message('critical', $th);
         }
 		$response['token'] = csrf_hash();
 		return $this->response->setJSON($response);

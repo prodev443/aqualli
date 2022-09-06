@@ -304,6 +304,7 @@ class MainModel extends Model
                 return 'not_allowed';
             }
         } catch (Exception $e) {
+            log_message('critical', $e);
             return 'db_error';
         }
     }

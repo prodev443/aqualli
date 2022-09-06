@@ -2,15 +2,12 @@
 $this->setVar('title', 'Edición');
 $this->setVar('pagetitle', 'Alumnos');
 $this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
     'assets/libs/select2/css/select2.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css',
 ));
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
     'assets/libs/select2/js/select2.min.js',
-    'assets/custom/js/ajax.js',
     'assets/js/students/edit.js',
 ));
 ?>

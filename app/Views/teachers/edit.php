@@ -2,16 +2,13 @@
 $this->setVar('title', 'Edición');
 $this->setVar('pagetitle', 'Profesores');
 $this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
     'assets/libs/select2/css/select2.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css',
 ));
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
     'assets/libs/select2/js/select2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
-    'assets/custom/js/upper.js', // Mayúsculas automáticas
+    'assets/js/teachers/edit.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -33,7 +30,7 @@ $this->setVar('scripts', array(
                 </div>
             </div>
             <form id="teacher-form">
-                <input type="hidden" id="id" name="id" value="<?=$teacher['id']?>">
+                <input type="hidden" id="teacher-id" name="id" value="<?=$teacher['id']?>">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
@@ -132,10 +129,10 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" onclick="postForm('teacher-form', '<?=esc(base_url('teachers/resources/update'),'js')?>', '<?=esc(base_url('teachers'),'js')?>')" class="btn btn-success btn-label">
+                    <button id="sendBtn" type="button" class="btn btn-success btn-label">
                         <i class="bx bxs-save label-icon"></i> Guardar
                     </button>
-                    <button type="button" onclick="deleteInput('<?=esc(base_url('teachers/resources/delete'),'js')?>', '<?=esc(base_url('teachers'),'js')?>')" class="btn btn-danger btn-label">
+                    <button id="deleteBtn" type="button" class="btn btn-danger btn-label">
                         <i class="bx bx-trash label-icon"></i> Eliminar
                     </button>
                 </div>
@@ -144,12 +141,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-
-    $(document).ready(function() {
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    })
-
-
-</script>
 <?= $this->endSection(); ?>

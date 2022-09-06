@@ -18,56 +18,48 @@ function serializeFormData(form_id) {
     return form_data
 }
 
+function postReq(data, post_url, dataType = 'text json') {
+    return $.ajax(
+        post_url, {
+        method: 'post',
+        data: data,
+        dataType: dataType,
+    }
+    ).done(function (data) {
+        csrftoken = data.token;
+        return Promise.resolve(data)
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        return Promise.reject(textStatus)
+    })
+}
+
 /** Envío POST de JSON
  * Description
  * @param {JSON} data
  * @param {string} post_url
  * @returns {object} Promise
  */
- function postJSONData(data, post_url, success_title = 'Datos guardados', success_text = 'Actualización existosa') {
-    return new Promise((resolve, reject) => {
-
-        data[csrfname] = csrftoken
-
-        const request = () => {
-            return new Promise((resolve, reject) => {
-                $.ajax(
-                    post_url, {
-                        method: 'post',
-                        data: data,
-                        dataType: 'text json',
-                        success: function (data, status) {
-                            csrftoken = data.token;
-                            resolve(data)
-                        },
-                        error: function (jqXHR, textStatus) {
-                            console.log('jqXHR'+ jqXHR.status +', Response error: ' + textStatus);
-                        }
-                    }
-                )
-            })
-        }
-
-        request().then((data) => {
-            if (data.errors !== undefined) {
-                for (var i in data.errors) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: data.errors[i],
-                    })
-                }
-                console.log(data)
-            } else {
+function postJSONData(data, post_url, success_title = 'Datos guardados', success_text = 'Actualización existosa') {
+    data[csrfname] = csrftoken
+    return postReq(data, post_url).then((data) => {
+        if (data.errors !== undefined) {
+            for (var i in data.errors) {
                 Swal.fire({
-                    icon: 'success',
-                    title: success_title,
-                    text: success_text,
-                }).then(() => {
-                    resolve(data)
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.errors[i],
                 })
             }
-        })
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: success_title,
+                text: success_text,
+            })
+        }
+        return Promise.resolve(data)
+    }).catch((textStatus) => {
+        return Promise.reject(textStatus)
     })
 }
 
@@ -77,9 +69,9 @@ function serializeFormData(form_id) {
  * @param {string} delete_url
  * @returns {object} Promise
  */
- function deleteJSONData(data, delete_url){
+function deleteJSONData(data, delete_url) {
     return new Promise((resolve, reject) => {
-        let xheaders = {'X-Requested-With': 'XMLHttpRequest'}
+        let xheaders = { 'X-Requested-With': 'XMLHttpRequest' }
         xheaders[csrfheader] = csrftoken
         const request = () => {
             return new Promise((resolve, reject) => {
@@ -89,11 +81,11 @@ function serializeFormData(form_id) {
                         method: 'delete',
                         headers: xheaders,
                         data: data,
-                        success: function(data, status) {
+                        success: function (data, status) {
                             csrftoken = data.token;
                             resolve(data)
                         },
-                        error: function(jqXHR, textStatus){
+                        error: function (jqXHR, textStatus) {
                             console.log(jqXHR)
                             console.log(textStatus);
                         }
@@ -101,21 +93,21 @@ function serializeFormData(form_id) {
                 )
             })
         }
-    
+
         Swal.fire({
-        title: '¿Quieres eliminar?',
-        text: "¡No podrás recuperar la información!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No'
+            title: '¿Quieres eliminar?',
+            text: "¡No podrás recuperar la información!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
                 request().then((data) => {
-                    if(data.errors !== undefined){
-                        for(var i in data.errors){
+                    if (data.errors !== undefined) {
+                        for (var i in data.errors) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
@@ -154,19 +146,19 @@ function postData(data, post_url) {
             return new Promise((resolve, reject) => {
                 $.ajax(
                     post_url, {
-                        method: 'post',
-                        data: data,
-                        processData: false,
-                        contentType: false,
-                        cache: false,
-                        success: function (data, status) {
-                            csrftoken = data.token;
-                            resolve(data)
-                        },
-                        error: function (jqXHR, textStatus) {
-                            console.log(textStatus);
-                        }
+                    method: 'post',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (data, status) {
+                        csrftoken = data.token;
+                        resolve(data)
+                    },
+                    error: function (jqXHR, textStatus) {
+                        console.log(textStatus);
                     }
+                }
                 )
             })
         }
@@ -199,9 +191,9 @@ function postData(data, post_url) {
  * @param {string} delete_url
  * @returns {object} Promise
  */
- function deleteData(data, delete_url){
+function deleteData(data, delete_url) {
     return new Promise((resolve, reject) => {
-        let xheaders = {'X-Requested-With': 'XMLHttpRequest'}
+        let xheaders = { 'X-Requested-With': 'XMLHttpRequest' }
         xheaders[csrfheader] = csrftoken
         const request = () => {
             return new Promise((resolve, reject) => {
@@ -211,11 +203,11 @@ function postData(data, post_url) {
                         method: 'delete',
                         headers: xheaders,
                         data: data,
-                        success: function(data, status) {
+                        success: function (data, status) {
                             csrftoken = data.token;
                             resolve(data)
                         },
-                        error: function(jqXHR, textStatus){
+                        error: function (jqXHR, textStatus) {
                             console.log(jqXHR)
                             console.log(textStatus);
                         }
@@ -223,38 +215,38 @@ function postData(data, post_url) {
                 )
             })
         }
-    
+
         Swal.fire({
-        title: '¿Quieres eliminar?',
-        text: "¡No podrás recuperar la información!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No'
+            title: '¿Quieres eliminar?',
+            text: "¡No podrás recuperar la información!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
         }).then((result) => {
-        if (result.isConfirmed) {
-            request().then((data) => {
-                if(data.errors !== undefined){
-                    for(var i in data.errors){
+            if (result.isConfirmed) {
+                request().then((data) => {
+                    if (data.errors !== undefined) {
+                        for (var i in data.errors) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.errors[i],
+                            })
+                        }
+                        reject(data)
+                    } else {
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: data.errors[i],
+                            icon: 'success',
+                            title: 'Datos guardados',
+                            text: 'Eliminación existosa',
                         })
+                        resolve(data)
                     }
-                    reject(data)
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Datos guardados',
-                        text: 'Eliminación existosa',
-                    })
-                    resolve(data)
-                }
-            })
-        }
+                })
+            }
         })
     })
 }
@@ -265,17 +257,17 @@ function postData(data, post_url) {
  * @param {string} post_url '<?= base_url('') ?>'
  * @param {string} return_url '<?= base_url('') ?>'
  */
-function postForm(form_id, post_url, return_url){
+function postForm(form_id, post_url, return_url) {
     let data = new FormData(document.getElementById(form_id))
     postData(data, post_url).then(() => {
-        if(return_url !== ''){
+        if (return_url !== '') {
             window.location = return_url
         }
     })
 }
 
 // Envía un formulario en formato JSON por POST
-function postJSONForm(form_id, post_url, return_url = null){
+function postJSONForm(form_id, post_url, return_url = null) {
     let data = $(form_id).serializeArray();
     const json = {};
     $.each(data, function () {
@@ -291,11 +283,11 @@ function postJSONForm(form_id, post_url, return_url = null){
                 {
                     method: 'post',
                     data: json,
-                    success: function(data, status) {
+                    success: function (data, status) {
                         csrftoken = data.token;
                         resolve(data)
                     },
-                    error: function(jqXHR, textStatus){
+                    error: function (jqXHR, textStatus) {
                         console.log(jqXHR);
                         console.log(textStatus);
                     }
@@ -305,8 +297,8 @@ function postJSONForm(form_id, post_url, return_url = null){
     }
 
     request().then((data) => {
-        if(data.errors !== undefined){
-            for(var i in data.errors){
+        if (data.errors !== undefined) {
+            for (var i in data.errors) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -319,8 +311,8 @@ function postJSONForm(form_id, post_url, return_url = null){
                 title: 'Datos guardados',
                 text: 'Actualización existosa',
             })
-            if(return_url !== null){
-                window.setTimeout(function(){
+            if (return_url !== null) {
+                window.setTimeout(function () {
                     window.location = return_url;
                 }, 1000)
             }
@@ -334,15 +326,15 @@ function postJSONForm(form_id, post_url, return_url = null){
  * @param {string} return_url '<?= base_url('') ?>'
  * @param {string} id_field='id'
  */
-function deleteInput(delete_url, return_url = '', id_field = 'id'){
+function deleteInput(delete_url, return_url = '', id_field = 'id') {
 
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         let id = document.getElementById(id_field).value;
         data = {
             id: id
         }
         deleteData(data, delete_url).then((data) => {
-            if(return_url !== ''){
+            if (return_url !== '') {
                 window.location = return_url
             }
             resolve(data)

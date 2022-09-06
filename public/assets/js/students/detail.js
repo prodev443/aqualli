@@ -120,3 +120,34 @@ document.addEventListener('DOMContentLoaded', function (e) {
         },
     });
 })
+
+document.addEventListener('DOMContentLoaded', function (e) {
+    document.getElementById('gen-user-btn').addEventListener('click', function (e) {
+        let post_url = `${base_url}/`
+        let updateStudentUrl = `${base_url}/`
+        let record = {
+            first_name: document.getElementById('first_name').value,
+            first_last_name: document.getElementById('last_name').value,
+            second_last_name: document.getElementById('second_last_name').value,
+            email: document.getElementById('email').value,
+            is_active: '1',
+            phone: document.getElementById('mobile_number').value,
+        }
+
+        postJSONData(data, post_url,'Usuario nuevo registrado', 'Se ha creado un nuevo usuario').then((user) => {
+            let student = {
+                student_id: student_id,
+                assigned_to: user.id
+            }
+            return Promise.resolve(student)
+        }).then((student) => {
+            postJSONData(student, updateStudentUrl,'Alumno actualizado', 'Alumno asignado al nuevo usuario')
+            .then().catch((textStatus) => {
+                console.log(textStatus);
+            })
+        })
+        .catch((textStatus) => {
+            console.log(textStatus);
+        })
+    })
+})
