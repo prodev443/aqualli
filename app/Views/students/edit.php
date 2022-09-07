@@ -13,7 +13,9 @@ $this->setVar('scripts', array(
 ?>
 <?= $this->extend('layouts/main');?>
 <?= $this->section('content');?>
-<!-- Formulario Profesor -->
+<!-- Formulario Alumno -->
+<div id="student-data" data-id="<?= $student['id'] ?>"></div>
+<div id="group-data" data-id="<?=$student['group_id']?>"></div>
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -30,7 +32,7 @@ $this->setVar('scripts', array(
                     </div>
                 </div>
             </div>
-            <form id="student_form">
+            <form id="student-form">
                 <input type="hidden" id="id" name="id" value="<?=$student['id']?>">
 
                 <div class="row">
@@ -97,7 +99,6 @@ $this->setVar('scripts', array(
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div id="group_id-data" data-group_id="<?=$student['group_id']?>" hidden></div>
                         <div class="mb-3">
                             <label for="group_id" class="form-label">Grupo</label>
                             <select class="form-control" name="group_id" id="group_id" required>
@@ -142,15 +143,12 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button"
-                        onclick="postForm('student_form', '<?=esc(base_url('students/resources/update'),'js')?>', '<?=esc(base_url('students'),'js')?>')"
-                        class="btn btn-success btn-label">
-                        <i class="bx bxs-save label-icon"></i> Guardar
+                    <button id="updateBtn" type="button" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i>Guardar
                     </button>
-                    <button type="button"
-                        onclick="deleteInput('<?=esc(base_url('students/resources/delete'),'js')?>', '<?=esc(base_url('students'),'js')?>')"
+                    <button id="deleteBtn" type="button"
                         class="btn btn-danger btn-label">
-                        <i class="bx bx-trash label-icon"></i> Eliminar
+                        <i class="bx bx-trash label-icon"></i>Eliminar
                     </button>
                 </div>
             </form>
@@ -158,11 +156,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-$(document).ready(
-    function() {
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    }
-)
-</script>
 <?= $this->endSection(); ?>

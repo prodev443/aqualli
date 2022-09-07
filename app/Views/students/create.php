@@ -2,7 +2,6 @@
 $this->setVar('title', 'Registro');
 $this->setVar('pagetitle', 'Alumnos');
 $this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
     'assets/libs/select2/css/select2.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css',
@@ -11,7 +10,6 @@ $this->setVar('css_styles', array(
 $this->setVar('scripts', array(
     'assets/libs/sweetalert2/sweetalert2.min.js',
     'assets/libs/select2/js/select2.min.js',
-    'assets/custom/js/ajax.js',
     'assets/js/students/create.js',
 ));
 ?>
@@ -34,7 +32,6 @@ $this->setVar('scripts', array(
                 </div>
             </div>
             <form id="student-form">
-
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
@@ -134,10 +131,8 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button"
-                        onclick="postForm('student-form', '<?=esc(base_url('students/resources/insert'),'js')?>', '<?=esc(base_url('students'),'js')?>')"
-                        class="btn btn-success btn-label">
-                        <i class="bx bxs-save label-icon"></i> Registrar
+                    <button id="saveBtn" type="button" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i>Registrar
                     </button>
                 </div>
 
@@ -146,11 +141,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-$(document).ready(
-    function() {
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    }
-)
-</script>
 <?= $this->endSection(); ?>

@@ -38,7 +38,7 @@ function postData(sendData, url) {
 }
 
 /**
- * HTTP DELETE FormData
+ * HTTP DELETE JSON
  * @param {object} sendJSON
  * @param {string} url
  * @returns {any}

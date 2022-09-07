@@ -17,6 +17,7 @@ class StudentsController extends MasterController
 
     public function __construct()
     {
+        helper('files');
         $this->model = new StudentsModel();
         $this->main_route = 'students';
         $this->view_subdir = 'students';
