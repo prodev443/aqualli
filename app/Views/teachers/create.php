@@ -2,15 +2,13 @@
 $this->setVar('title', 'Registro');
 $this->setVar('pagetitle', 'Profesores');
 $this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
     'assets/libs/select2/css/select2.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.min.css',
     'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css',
 ));
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
     'assets/libs/select2/js/select2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
+    'assets/js/teachers/create.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -63,7 +61,7 @@ $this->setVar('scripts', array(
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="address_postal_code" class="form-label">C.P.</label>
-                            <input type="text" class="form-control" id="address_postal_code" name="address_postal_code" >
+                            <input type="text" pattern="[0-9]{5}" class="form-control" id="address_postal_code" name="address_postal_code" >
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -126,8 +124,8 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" onclick="postForm('teacher-form', '<?=esc(base_url('teachers/resources/insert'),'js')?>', '<?=esc(base_url('teachers'),'js')?>')" class="btn btn-success btn-label">
-                        <i class="bx bxs-save label-icon"></i> Guardar
+                    <button id="saveBtn" type="submit" class="btn btn-success btn-label">
+                        <i class="bx bxs-save label-icon"></i>Guardar
                     </button>
                 </div>
             </form>
@@ -135,11 +133,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-
-    $(document).ready(function() {
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    })
-
-</script>
 <?= $this->endSection(); ?>

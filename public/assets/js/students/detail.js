@@ -104,18 +104,17 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     let data = cell.getRow().getData()
                     let insert_url = `${base_url}/scores/resources/insert`
                     let update_url = `${base_url}/scores/resources/update`
-                    let record = {
-                        student_id: data.student_id,
-                        course_id: data.course_id,
-                        score: cell.getValue()
-                    }
+                    let record = new FormData()
+                    record.append('student_id', data.student_id)
+                    record.append('course_id', data.course_id)
+                    record.append('score', cell.getValue())
                     if(data.score_id == null){
-                        postJSONData(record, insert_url).then((data) => {
+                        postData(record, insert_url).then(() => {
                             coursesTable.replaceData()
                         })
                     } else {
-                        record.id = data.score_id
-                        postJSONData(record, update_url).then((data) => {
+                        record.append('id', data.score_id)
+                        postData(record, update_url).then((data) => {
                             coursesTable.replaceData()
                         })
                     }

@@ -14,6 +14,7 @@ $this->setVar('scripts', array(
 <?= $this->extend('layouts/main');?>
 <?= $this->section('content');?>
 <!-- Formulario Profesor -->
+<div id="teacher-data" data-id="<?= $teacher['id'] ?>"></div>
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -129,7 +130,7 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button id="sendBtn" type="button" class="btn btn-success btn-label">
+                    <button type="button" class="btn btn-success btn-label">
                         <i class="bx bxs-save label-icon"></i> Guardar
                     </button>
                     <button id="deleteBtn" type="button" class="btn btn-danger btn-label">

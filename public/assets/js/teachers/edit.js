@@ -1,6 +1,9 @@
-$('#sendBtn').click(function (e) {
+let teacher = document.getElementById('teacher-data').dataset
+$('#teacher-form').submit(function (e) {
     e.preventDefault()
-    postForm('teacher-form', `${base_url}/teachers/resources/update`)
+    postForm('teacher-form', `${base_url}/teachers/resources/update`, true, function () {
+        window.location = `${base_url}/teachers/detail/${teacher.id}`
+    })
 })
 
 $('#deleteBtn').click(function (e) {
