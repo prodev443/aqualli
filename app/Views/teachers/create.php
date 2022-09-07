@@ -124,7 +124,7 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button id="saveBtn" type="submit" class="btn btn-success btn-label">
+                    <button type="submit" class="btn btn-success btn-label">
                         <i class="bx bxs-save label-icon"></i>Guardar
                     </button>
                 </div>

@@ -2,8 +2,6 @@
  * Init script
  * Vista: app\Views\groups\list.php
  */
-
-let base_url = window.location.origin
 let groupsContainer = document.getElementById('groups-container')
 
 fetch(`${base_url}/groups/resources/get`).then((response) => { 

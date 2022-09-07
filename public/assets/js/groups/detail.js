@@ -3,7 +3,6 @@
  * Vista: app\Views\groups\detail.php
  */
 
-let base_url = window.location.origin
 $(document).ready(
     function () {
         let groupInfo = document.getElementById('group-info').dataset
@@ -147,14 +146,14 @@ $(document).ready(
                 } else {
                     if (selectedEvent) { // Actualización de un evento
                         temp_event.id = $("#event-id").val()
-                        postJSONData(temp_event, `${base_url}/schedules/resources/update`).then(
+                        postJSON(temp_event, `${base_url}/schedules/resources/update`).then(
                             () => {
                                 selectedEvent = null
                                 calendar.refetchEvents()
                                 calendar.updateSize()
                             })
                     } else { // Inserción de un nuevo evento
-                        postJSONData(temp_event, `${base_url}/schedules/resources/insert`).then(
+                        postJSON(temp_event, `${base_url}/schedules/resources/insert`).then(
                             () => {
                                 calendar.refetchEvents()
                                 calendar.updateSize()
@@ -169,7 +168,7 @@ $(document).ready(
                     let event = {
                         'id': selectedEvent.id
                     }
-                    deleteJSONData(event, `${base_url}/schedules/resources/delete`).then((
+                    deleteJSON(event, `${base_url}/schedules/resources/delete`).then((
                         result) => {
                         if (result !== false) {
                             selectedEvent.remove();

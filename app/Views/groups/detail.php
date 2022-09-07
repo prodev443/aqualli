@@ -2,7 +2,6 @@
 $this->setVar('title', 'Detalle');
 $this->setVar('pagetitle', 'Grupo');
 $this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
     'assets/libs/fullcalendar/main.min.css',
     'assets/libs/bootstrap/icons/bootstrap-icons.css',
     'assets/libs/select2/css/select2.min.css',
@@ -11,11 +10,9 @@ $this->setVar('css_styles', array(
 
 ));
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
     'assets/libs/fullcalendar/main.min.js',
     'assets/libs/fullcalendar/locales/es.js',
     'assets/libs/select2/js/select2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
     'assets/js/groups/detail.js',
 ));
 ?>
@@ -172,10 +169,4 @@ $this->setVar('scripts', array(
     </div>
 </div>
 <!-- Termina sección del calendario de clases -->
-
-<script>
-    document.addEventListener('DOMContentLoaded', function(e){
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    })
-</script>
 <?= $this->endSection(); ?>

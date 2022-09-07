@@ -63,7 +63,7 @@ $this->setVar('scripts', array(
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="address_postal_code" class="form-label">C.P.</label>
-                            <input type="text" class="form-control" id="address_postal_code" name="address_postal_code" value="<?=$teacher['address_postal_code']?>">
+                            <input type="text" pattern="[0-9]{5}" class="form-control" id="address_postal_code" name="address_postal_code" value="<?=$teacher['address_postal_code']?>">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -130,7 +130,7 @@ $this->setVar('scripts', array(
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-success btn-label">
+                    <button type="submit" class="btn btn-success btn-label">
                         <i class="bx bxs-save label-icon"></i> Guardar
                     </button>
                     <button id="deleteBtn" type="button" class="btn btn-danger btn-label">
