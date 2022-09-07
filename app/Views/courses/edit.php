@@ -1,18 +1,15 @@
 <?php 
 $this->setVar('title', 'Editar');
 $this->setVar('pagetitle', 'Cursos');
-$this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
-
-));
+$this->setVar('css_styles', array());
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
+    'assets/js/courses/edit.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
 <?= $this->section('content');?>
 <!-- Formulario Curso -->
+<div id="course-data" data-id="<?= $course['id'] ?>"></div>
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -28,7 +25,7 @@ $this->setVar('scripts', array(
                     </div>
                 </div>
             </div>
-            <form id="course_form">
+            <form id="course-form">
               <input type="hidden" name="id" value="<?= $course['id'] ?>">
               <div class="row">
                   <div class="col-md-4">
@@ -65,10 +62,11 @@ $this->setVar('scripts', array(
               </div>
 
               <div>
-                  <button type="button"
-                      onclick="postForm('course_form', '<?=esc(base_url('courses/resources/update'),'js')?>', '<?=esc(base_url('courses'),'js')?>')"
-                      class="btn btn-success btn-label">
-                      <i class="bx bxs-save label-icon"></i> Guardar
+                  <button type="submit" class="btn btn-success btn-label">
+                      <i class="bx bxs-save label-icon"></i>Guardar
+                  </button>
+                  <button type="button" id="deleteBtn" class="btn btn-danger btn-label">
+                      <i class="bx bxs-trash label-icon"></i>Eliminar
                   </button>
               </div>
             </form>
@@ -76,11 +74,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-$(document).ready(
-    function() {
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    }
-)
-</script>
 <?= $this->endSection(); ?>

@@ -19,7 +19,7 @@ $this->setVar('scripts', array(
         <div class="card">
             <div class="card-body">
                 <a type="button" class="btn btn-info waves-effect btn-label waves-light" href="<?=base_url('students/create')?>">
-                    <i class='bx bx-plus label-icon'></i></i> Registrar Alumno
+                    <i class='bx bx-plus label-icon'></i></i>Alumno
                 </a>
                 <br><br>
                 <!-- tabulator -->

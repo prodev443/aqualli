@@ -1,13 +1,9 @@
 <?php 
 $this->setVar('title', 'Detalle');
 $this->setVar('pagetitle', 'Cursos');
-$this->setVar('css_styles', array(
-    'assets/libs/sweetalert2/sweetalert2.min.css',
-
-));
+$this->setVar('css_styles', array());
 $this->setVar('scripts', array(
-    'assets/libs/sweetalert2/sweetalert2.min.js',
-    'assets/custom/js/ajax.js', // AJAX requests con token
+    'assets/js/courses/detail.js',
 ));
 ?>
 <?= $this->extend('layouts/main');?>
@@ -77,11 +73,4 @@ $this->setVar('scripts', array(
         <!-- end card body -->
     </div>
 </div>
-<script>
-$(document).ready(
-    function() {
-        tokenize('<?=csrf_token()?>', '<?=csrf_header()?>', '<?=csrf_hash()?>')
-    }
-)
-</script>
 <?= $this->endSection(); ?>
