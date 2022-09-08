@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 var option = new Option(selectedEvent._def.extendedProps.courseName,
                     selectedEvent._def.extendedProps.courseId, true, true);
                 $('#course_id').append(option).trigger('change');
+                $('#group').val(selectedEvent._def.extendedProps.groupName);
                 modalTitle.text('Detalles de clase reservada');
             },
             dateClick: function (info) { },

@@ -196,6 +196,12 @@ $this->setVar('scripts', array(
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
+                              <label for="group" class="form-label">Grupo</label>
+                              <input type="text" class="form-control" name="group" id="group" disabled>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
                                 <label for="course_id" class="form-label">Curso</label>
                                 <select class="select2-search form-select" name="course_id"
                                     id="course_id" disabled>

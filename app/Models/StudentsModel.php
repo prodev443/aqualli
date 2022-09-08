@@ -74,5 +74,30 @@ class StudentsModel extends MainModel
 		[$student_id])->getResultArray();
 		return $result;
 	}
+
+	/**
+	 * * Consulta las clases de un profesor
+     * @param string $id Teacher
+     * 
+     * @return array
+     */
+    public function getSchedule(string $id)
+    {
+        $fields = "
+			schedules.startTime,
+			schedules.daysOfWeek,
+			schedules.className,
+			courses.id AS courseId,
+			courses.`name` AS title";
+		$this->select($fields);
+        $this->join('groups', 'students.group_id = groups.id', 'left');
+        $this->join('schedules', 'groups.id = schedules.group_id', 'left');
+        $this->join('courses', 'schedules.course_id = courses.id');
+        $this->where('students.id', $id);
+        $this->where('groups.deleted_at IS NULL');
+        $this->where('schedules.deleted_at IS NULL');
+        $this->where('courses.deleted_at IS NULL');
+		return parent::listAll();
+    }
 	
 }

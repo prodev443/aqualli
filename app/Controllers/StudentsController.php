@@ -178,4 +178,17 @@ class StudentsController extends MasterController
         $result = $this->model->getCourses($student_id);
         return $this->response->setJSON($result);
     }
+
+    /**
+	 * * Consulta las clases de un profesor
+     * @param string $id Student
+     * 
+     * @return array
+     */
+    public function getSchedule(string $id)
+    {
+        $response = $this->model->getSchedule($id);
+        return $this->response->setJSON($response);
+    }
+
 }

@@ -4,10 +4,14 @@ $this->setVar('pagetitle', 'Alumnos');
 $this->setVar('css_styles', array(
     'assets/libs/tabulator/css/tabulator_bootstrap3.min.css',
     'assets/libs/tabulator/css/tabulator_custom.css',
+    'assets/libs/fullcalendar/main.min.css',
+    'assets/libs/bootstrap/icons/bootstrap-icons.css',
 ));
 $this->setVar('scripts', array(
     'assets/libs/tabulator/js/tabulator.min.js',
     'assets/custom/js/table_library.js', // Funciones para tabulator
+    'assets/libs/fullcalendar/main.min.js',
+    'assets/libs/fullcalendar/locales/es.js',
     'assets/js/students/detail.js',
 ));
 ?>
@@ -207,4 +211,83 @@ $this->setVar('scripts', array(
     </div>
 </div>
 <!-- Termina tabla de cursos y calificaciones -->
+
+<!-- Inicia calendario de clases -->
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Clases</h4>
+            <div id="student-calendar"></div>
+        </div>
+    </div>
+</div>
+<!-- Termina calendario de clases -->
+
+<!-- Inicia ventana modal -->
+<div class="modal fade" id="event-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-3 px-4 border-bottom-0">
+                <h5 class="modal-title" id="modal-title">Clase</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form class="needs-validation" name="event-form" id="form-event" novalidate>
+                    <input id="event-id" type="hidden">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="course_id" class="form-label">Curso</label>
+                                <select class="select2-search form-select" name="course_id" id="course_id" disabled>
+                                    <option disabled selected value> -- Seleccione un curso -- </option>
+                                </select>
+                                <div class="invalid-feedback">Seleccione un curso de la lista</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Hora</label>
+                                <select class="form-control form-select" name="startTime" id="event-startTime" disabled>
+                                    <option disabled selected value> -- Seleccione una hora -- </option>
+                                    <option value="07:00:00">07:00:00</option>
+                                    <option value="08:00:00">08:00:00</option>
+                                    <option value="09:00:00">09:00:00</option>
+                                    <option value="10:00:00">10:00:00</option>
+                                    <option value="11:00:00">11:00:00</option>
+                                    <option value="12:00:00">12:00:00</option>
+                                    <option value="13:00:00">13:00:00</option>
+                                    <option value="14:00:00">14:00:00</option>
+                                    <option value="15:00:00">15:00:00</option>
+                                    <option value="16:00:00">16:00:00</option>
+                                    <option value="17:00:00">17:00:00</option>
+                                    <option value="18:00:00">18:00:00</option>
+                                    <option value="19:00:00">19:00:00</option>
+                                    <option value="20:00:00">20:00:00</option>
+                                    <option value="21:00:00">21:00:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Día</label>
+                                <select class="form-control form-select" name="daysOfWeek" id="event-daysOfWeek"
+                                    disabled>
+                                    <option value="0">Domingo</option>
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miércoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                </select>
+                                <div class="invalid-feedback">Selecione un día válido</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- end modal-content-->
+    </div>
+</div>
+<!-- Termina modal-->
 <?=$this->endSection();?>

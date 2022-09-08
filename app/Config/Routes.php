@@ -71,8 +71,11 @@ $routes->group('students', function($routes){
 	$routes->get('detail/(:num)', 'StudentsController::detail/$1');
 	$routes->get('edit/(:num)', 'StudentsController::edit/$1');
 	$routes->group('resources', function($routes){
-		$routes->get('get', 'StudentsController::get');
-		$routes->get('get/(:num)', 'StudentsController::get/$1');
+		$routes->group('get', function($routes){
+			$routes->get('', 'StudentsController::get');
+			$routes->get('(:num)', 'StudentsController::get/$1');
+			$routes->get('schedule/(:num)', 'StudentsController::getSchedule/$1');
+		});
 		$routes->get('select2', 'StudentsController::select2Students');
 		$routes->get('getphoto/(:num)', 'StudentsController::getPhoto/$1');
 		$routes->post('insert', 'StudentsController::insert');
