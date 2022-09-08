@@ -20,6 +20,7 @@ $this->setVar('scripts', array(
 <?= $this->section('content');?>
 
 <!-- Formulario Horario del grupo -->
+<div id="teacher-data" data-id="<?= $group['teacher_id'] ?>"></div>
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -55,6 +56,13 @@ $this->setVar('scripts', array(
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
+                                <label for="teacher_id" class="form-label">Profesor</label>
+                                <select class="form-control" name="teacher_id" id="teacher_id" disabled>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
                                 <label for="observations" class="form-label">Observaciones</label>
                                 <textarea class="form-control" name="observations" id="observations" rows="3"
                                     readonly><?= $group['observations'] ?></textarea>
@@ -80,7 +88,7 @@ $this->setVar('scripts', array(
             </div>
             <div class="modal-body p-4">
                 <form class="needs-validation" name="event-form" id="form-event" novalidate>
-                    <input id="event-id" type="hidden">
+                    <input id="event-id" type="hidden" value="">
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
@@ -121,7 +129,7 @@ $this->setVar('scripts', array(
                                 <label class="form-label">Día</label>
                                 <select class="form-control form-select" name="daysOfWeek" id="event-daysOfWeek"
                                     required>
-                                    <!-- <option disabled selected value> -- Selecciona el día -- </option> -->
+                                    <option disabled selected value> -- Selecciona el día -- </option>
                                     <option value="0">Domingo</option>
                                     <option value="1">Lunes</option>
                                     <option value="2">Martes</option>

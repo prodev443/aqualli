@@ -40,7 +40,7 @@ class TeachersController extends MasterController
     public function select2Teachers()
     {
         $model = $this->model;
-        $fields = ['id', 'CONCAT(teachers.first_name,\' \',teachers.last_name) AS `text`'];
+        $fields = ['id', 'CONCAT(teachers.first_name,\' \',teachers.last_name) AS `name`'];
         if (isset($_GET['_type']) && $_GET['_type'] === 'query') {
             $response = $model->select2Get($fields, 'CONCAT(teachers.first_name,\' \',teachers.last_name)', 'both', $_GET['q'] ?? '');
             return $this->response->setJSON($response);
@@ -226,6 +226,24 @@ class TeachersController extends MasterController
             $this->response->setStatusCode(500, 'Faltan datos para la solicitud');
         }
         $response['token'] = csrf_hash();
+        return $this->response->setJSON($response);
+    }
+
+    /**
+	 * * Consulta las clases de un profesor
+     * @param string $id Teacher
+     * 
+     * @return array
+     */
+    public function getSchedule(string $id)
+    {
+        $response = $this->model->getSchedule($id);
+        if (!empty($response)) {
+            $response = array_map(function($i){
+                $i['title'] = $i['courseName'];
+                return $i;
+            }, $response);
+        }
         return $this->response->setJSON($response);
     }
 }

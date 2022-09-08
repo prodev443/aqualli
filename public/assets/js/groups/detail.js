@@ -2,10 +2,20 @@
  * Inicializa la vista de detalle del grupo
  * Vista: app\Views\groups\detail.php
  */
-
+let teacher = null
 $(document).ready(
     function () {
+        teacher = document.getElementById('teacher-data').dataset
         let groupInfo = document.getElementById('group-info').dataset
+
+        fetch(`${base_url}/teachers/resources/get/${teacher.id}`).then((response) => {
+            return response.json()
+        }).then((teacherA) => {
+            let teacherName = `${teacherA.first_name} ${teacherA.last_name} ${teacherA.second_last_name}`
+            let option = new Option(teacherName, teacherA.id, true, true);
+            $('#teacher_id').append(option).trigger('change');
+        })
+
         var CalendarPage = function () { };
         CalendarPage.prototype.init = function () {
 
@@ -13,9 +23,7 @@ $(document).ready(
             var modalTitle = $("#modal-title");
             var formEvent = $("#form-event");
             var selectedEvent = null;
-            var newEventData = null;
             var forms = document.getElementsByClassName('needs-validation');
-            var eventObject = null;
 
             function msToTime(s) {
                 // Pad to 2 or 3 digits, default is 2
@@ -100,7 +108,7 @@ $(document).ready(
                         .startTime.milliseconds));
                     $("#event-daysOfWeek").val(selectedEvent._def.recurringDef.typeData
                         .daysOfWeek);
-                    var option = new Option(selectedEvent._def.title,
+                    var option = new Option(selectedEvent._def.extendedProps.course,
                         selectedEvent._def.extendedProps.course_id, true, true);
                     $('#course_id').append(option).trigger('change');
                     modalTitle.text('Actualizar clase reservada');
@@ -117,17 +125,17 @@ $(document).ready(
             // Funciones del CRUD
 
             function addNewEvent(info) {
-                addEvent.modal('show');
+                selectedEvent = null
+                formEvent.trigger('reset')
                 formEvent.removeClass("was-validated");
-                formEvent[0].reset();
-                $('#event-category').val();
-                modalTitle.text('Add Event');
-                newEventData = info;
+                $('#event-id').val(null);
+                $('#course_id').val(null).trigger('change');
+                addEvent.modal('show');
+                modalTitle.text('Agregar Evento');
             }
 
             $(formEvent).on('submit', function (ev) {
                 ev.preventDefault();
-                var inputs = $('#form-event :input');
                 var startTime = $('#event-startTime').val()
                 var daysOfWeek = $('#event-daysOfWeek').val()
                 var course_id = $('#course_id').find(':selected').val()

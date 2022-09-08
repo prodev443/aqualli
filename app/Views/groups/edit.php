@@ -1,8 +1,13 @@
 <?php 
 $this->setVar('title', 'Editar');
 $this->setVar('pagetitle', 'Grupos');
-$this->setVar('css_styles', array());
+$this->setVar('css_styles', array(
+    'assets/libs/select2/css/select2.min.css',
+    'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.min.css',
+    'assets/libs/select2/bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css',
+));
 $this->setVar('scripts', array(
+    'assets/libs/select2/js/select2.min.js',
     'assets/js/groups/edit.js',
 ));
 ?>
@@ -10,6 +15,7 @@ $this->setVar('scripts', array(
 <?= $this->section('content');?>
 <!-- Formulario Curso -->
 <div id="group-data" data-id="<?= $group['id'] ?>"></div>
+<div id="teacher-data" data-id="<?= $group['teacher_id'] ?>"></div>
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -34,6 +40,13 @@ $this->setVar('scripts', array(
                         <input type="text" class="form-control" name="name" id="name" value="<?= $group['name'] ?>">
                       </div>
                   </div>
+                  <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="teacher_id" class="form-label">Profesor</label>
+                            <select class="form-control" name="teacher_id" id="teacher_id" required>
+                            </select>
+                        </div>
+                    </div>
                   <div class="col-md-4">
                       <div class="mb-3">
                         <label for="observations" class="form-label">Observaciones</label>

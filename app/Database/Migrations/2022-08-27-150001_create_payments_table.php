@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateScoresTable extends Migration
+class CreatePaymentsTable extends Migration
 {
     public function up()
     {
@@ -46,12 +46,12 @@ class CreateScoresTable extends Migration
         $this->forge->addForeignKey('student_id', 'students', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('course_id', 'courses', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->addUniqueKey(['student_id', 'course_id']);
-        $this->forge->createTable('scores');
+        $this->forge->createTable('payments');
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('scores');
+        $this->forge->dropTable('payments');
     }
 }

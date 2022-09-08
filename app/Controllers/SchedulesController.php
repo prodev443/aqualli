@@ -25,6 +25,12 @@ class SchedulesController extends MasterController
 		$response = [];
 		$model = $this->model;
 		$response = $model->listAll(['group_id' => $groupId]);
+		if (!empty($response)) {
+            $response = array_map(function($i){
+                $i['title'] = $i['course'];
+                return $i;
+            }, $response);
+        }
 		return $this->response->setJSON($response);
 	}
 

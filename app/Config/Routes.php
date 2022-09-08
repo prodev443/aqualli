@@ -91,8 +91,11 @@ $routes->group('teachers', function($routes){
 	$routes->get('edit/(:num)', 'TeachersController::edit/$1');
 	$routes->get('detail/(:num)', 'TeachersController::detail/$1');
 	$routes->group('resources', function($routes){
-		$routes->get('get', 'TeachersController::get');
-		$routes->get('get/(:num)', 'TeachersController::get/$1');
+		$routes->group('get', function($routes){
+			$routes->get('', 'TeachersController::get');
+			$routes->get('(:num)', 'TeachersController::get/$1');
+			$routes->get('schedule/(:num)', 'TeachersController::getSchedule/$1');
+		});
 		$routes->get('select2', 'TeachersController::select2Teachers');
 		$routes->get('getcv/(:num)', 'TeachersController::getCV/$1');
 		$routes->get('getphoto/(:num)', 'TeachersController::getPhoto/$1');

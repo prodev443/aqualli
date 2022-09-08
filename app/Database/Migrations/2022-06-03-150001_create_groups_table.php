@@ -21,6 +21,10 @@ class CreateGroupsTable extends Migration
                 'constraint' => 100,
                 'null' => true,
             ],
+            'teacher_id' => [
+                'type' => 'INT',
+                'constraint' => 9,
+            ],
             'created_by' => [
                 'type' => 'INT',
                 'constraint' => 9,
